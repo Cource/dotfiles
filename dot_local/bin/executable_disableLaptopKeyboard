@@ -1,0 +1,10 @@
+#! /bin/sh
+
+if [ $1 = '-e' ]
+then
+    printf "Enabling Laptop Keyboard\n";
+    xinput reattach 18 3
+else
+    printf "Disabling Laptop Keyboard\nDo:\n\ndisableLaptopKeyboard -e\n\nto enable it again\n"
+    xinput float 18
+fi

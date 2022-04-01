@@ -1,0 +1,83 @@
+Config { overrideRedirect = False
+       , font             = "xft:FiraCode-9.7"
+       , additionalFonts  = [ "xft:Symbols Nerd Font-12", "xft:SourceCodePro-14" ]
+       , textOffsets      = [ 17 ]
+       , bgColor          = "#1C2541"
+       , fgColor          = "#FFECF2"
+       , position         = TopH 26
+       , commands         =
+                    [ Run WeatherX "VOCI"
+                        [ ("clear", "")
+                        , ("sunny", "")
+                        , ("mostly clear", "")
+                        , ("mostly sunny", "")
+                        , ("partly sunny", "")
+                        , ("fair", "")
+                        , ("cloudy","")
+                        , ("overcast","")
+                        , ("partly cloudy", "")
+                        , ("mostly cloudy", "")
+                        , ("considerable cloudiness", "")
+                        ]
+                        [ "-t",       "<fn=1><skyConditionS></fn> <tempC>° <rh>% <windKmh>km/h"
+                        , "-L",       "10"
+                        , "-H",       "25"
+                        , "--normal", "#f8f8f2"
+                        , "--high",   "#ff6f29"
+                        , "--low",    "#0077ff"
+                        ] 36000
+                    , Run Cpu
+                        [ "--template", "<fn=1></fn> <total>%"
+                        , "-L",       "3"
+                        , "-H",       "50"
+                        , "--high"  , "red"
+                        , "--normal", "green"
+                        ] 10
+                    , Run Battery
+                        [ "--template", "<acstatus>"
+                        , "-L", "25"
+                        , "-l", "red"
+                        , "--"
+                        , "-i", "<fn=1><fc=#6FFFE9></fc></fn>"
+                        , "-O", "<fn=1></fn> <left>%"
+                        , "-o", "<fn=1></fn> <left>% (<timeleft>)"
+                        ] 10
+                    , Run Volume "default" "Master"
+                        [ "--template", "<fn=1><status></fn> <volume>%"
+                        , "--"
+                        , "--on",      ""
+                        , "--onc",     "#f8f8f2"
+                        , "--offc",    "#f8f8f2"
+                        , "--off",     "婢"
+                        , "--highs",   "墳"
+                        , "--mediums", "奔"
+                        , "--lows",    "奄"
+                        ] 10
+                    , Run Brightness
+                        [ "--template", "<fn=1></fn> <percent>%"
+                        , "--"
+                        , "-D", "intel_backlight"
+                        ] 10
+                    , Run ThermalZone 0
+                        [ "--template", "<temp>°"
+                        , "-H",         "70"
+                        , "--high",     "red"
+                        ] 30
+                    , Run DynNetwork
+                        [ "--template", "<fn=1></fn> <dev> <fn=1></fn> <rx>KB/s <fn=1></fn> <tx>KB/s"
+                        , "--low", "#3A506B"
+                        ] 10
+                    , Run Wireless "wlo1"
+                        [ "--template", "<fc=#F8F8F2,#3A506B><fn=2><qualityvbar></fn></fc> <ssid>"
+                        , "--nastring", ""
+                        ] 10
+                    , Run Memory ["--template", "<fn=1>﬙</fn> <usedratio>%"] 10
+                    , Run Date "%a %d-%m-%Y <fc=#6FFFE9>%H:%M</fc>" "date" 10
+                    , Run XMonadLog
+                    , Run Com "/bin/bash" [ "-c", "~/.pomo/pomo.sh" ] "pomo" 1
+                    ]
+       , sepChar  = "%"
+       , alignSep = "}{"
+       , template = "%XMonadLog%}%cpu% %thermal0%   %memory%   %dynnetwork% %wlo1wi%{%default:Master%   %bright%   %battery%%pomo%   %VOCI%   %date%  "
+       }
+

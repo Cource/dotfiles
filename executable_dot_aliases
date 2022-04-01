@@ -1,0 +1,9 @@
+alias ls="ls --color=always"
+alias c="source ranger"
+alias pacman="sudo pacman"
+alias list-fonts="fc-list |sed 's/\/.*\///' |sed 's/\..*$//'|sed 's/-.*$//'|sort|uniq|less"
+alias hist="cat ~/.histfile | sort | awk '{\$1=\$1;print}' | uniq | fzf | $SHELL"
+
+# For remembering stuff
+alias keyboardRGB=msi-perkeyrgb
+alias fanControl=isw

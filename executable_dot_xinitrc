@@ -1,0 +1,17 @@
+# Setup special capslock behavior
+capsToCtrl
+
+# Enable touchpad tap to click
+xinput set-prop "CUST0001:00 06CB:CDA1 Touchpad" "libinput Tapping Enabled" 1
+# Natural scrolling
+xinput set-prop "CUST0001:00 06CB:CDA1 Touchpad" "libinput Natural Scrolling Enabled" 1
+
+
+# Set up icon tray
+# sleep 10; trayer --edge top --align center --width 5 --height 18 --distancefrom left --distance 300 --transparent true --alpha 0 --tint 0x1C2541
+# trayer --edge bottom --align right --SetPartialStrut true --expand true --width 10 --transparent true --height 20 &
+
+# Set wallpaper
+nitrogen --restore &
+
+exec ~/.cache/xmonad/xmonad-x86_64-linux

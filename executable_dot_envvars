@@ -1,0 +1,10 @@
+export PATH="/home/cource/.local/bin:"$PATH
+export EDITOR=nvim
+export PROMPT="%B%F{8}[%f%b%F{10}%n%f%F{8}@%f%F{240}%m%f %~%B%F{8}] %f%b"
+
+# for making every application render on Nvidia GPU
+#export __NV_PRIME_RENDER_OFFLOAD=1
+#export __GLX_VENDOR_LIBRARY_NAME=nvidia
+
+# Allow editing display brightness
+sudo chmod 666 /sys/class/backlight/intel_backlight/brightness

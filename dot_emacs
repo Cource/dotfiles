@@ -1,0 +1,107 @@
+
+;; Visual tweaks
+;; -------------
+
+
+;; Font setup
+
+(set-face-attribute 'default nil
+		    :font "FiraCode"
+		    :height 130)
+(set-face-attribute 'fixed-pitch nil
+		    :font "FiraCode"
+		    :height 130)
+(set-face-attribute 'variable-pitch nil
+		    :font "Atkinson Hyperlegible"
+		    :height 150)
+
+
+
+(setq inhibit-startup-screen t) ; Disable startup screen
+(set-fringe-mode  20)  ; Add padding to the sides of the frame
+(scroll-bar-mode   0)  ; disable scrollbars
+(tooltip-mode      0)  ; disable tooltips
+(menu-bar-mode     0)  ; disable menubar
+(tool-bar-mode     0)  ; disable toolbar
+(global-display-line-numbers-mode  t)  ; enable line numbers
+
+(ido-mode 1)  ; completion for some minibuffer actions
+
+
+
+;; Internal Logic
+;; --------------
+
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))  ; Melpa package repository
+(package-initialize)
+
+(global-set-key [67108925] 'er/expand-region)  ; Set C-= to expand-region
+
+
+
+;; Org mode
+
+(defun config/org-init ()
+  (setq org-ellipsis " ▾"
+	visual-fill-column-width       100
+	visual-fill-column-center-text   t)
+
+  (variable-pitch-mode 1)    ; Normal font mode
+  (set-face-attribute 'org-document-title nil
+		      :font   "Atkinson Hyperlegible"
+		      :weight 'bold
+		      :height 2.3)
+
+  (dolist (face '((org-level-1 . 2.3)    ; To increase font size of the headings based on
+                  (org-level-2 . 1.9)    ; heading level
+                  (org-level-3 . 1.5)
+                  (org-level-4 . 1.3)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil
+			:font   "Atkinson HyperLegible"
+			:weight 'bold
+			:height (cdr face)))
+
+  ;; Setting special text blocks' font face as fixed-pitch for better alignment
+  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil            :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-table nil           :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-verbatim nil        :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil       :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil        :inherit 'fixed-pitch)
+
+  (visual-fill-column-mode   1)  ; To center the window
+  (auto-fill-mode    1)          ; Wrap text after 78 characters
+  (set-fill-column  78)
+  (display-line-numbers-mode 0)
+  (org-indent-mode   1)
+)
+
+(add-hook 'org-mode-hook (lambda () (config/org-init)))
+
+
+
+;; Variables set by emacs
+;; ----------------------
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes '(doom-gruvbox))
+ '(custom-safe-themes
+   '("234dbb732ef054b109a9e5ee5b499632c63cc24f7c2383a849815dacc1727cb6" "1d5e33500bc9548f800f9e248b57d1b2a9ecde79cb40c0b1398dec51ee820daf" "97db542a8a1731ef44b60bc97406c1eb7ed4528b0d7296997cbb53969df852d6" "835868dcd17131ba8b9619d14c67c127aa18b90a82438c8613586331129dda63" "e2c926ced58e48afc87f4415af9b7f7b58e62ec792659fcb626e8cba674d2065" "0466adb5554ea3055d0353d363832446cd8be7b799c39839f387abb631ea0995" "c4063322b5011829f7fdd7509979b5823e8eea2abf1fe5572ec4b7af1dd78519" "a9a67b318b7417adbedaab02f05fa679973e9718d9d26075c6235b1f0db703c8" "7a7b1d475b42c1a0b61f3b1d1225dd249ffa1abb1b7f726aec59ac7ca3bf4dae" default))
+ '(package-selected-packages
+   '(org visual-fill-column lsp-haskell lsp-mode elm-mode expand-region haskell-mode doom-themes)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

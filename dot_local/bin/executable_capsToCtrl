@@ -1,0 +1,7 @@
+#! /bin/sh
+
+# set caps to ctrl
+xmodmap ~/.config/capsToCtrlModmap
+# make caps send esc when pressed on its own
+xcape -e "Control_L=Escape"
+

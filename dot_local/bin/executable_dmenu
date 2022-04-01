@@ -1,0 +1,2 @@
+#! /bin/sh
+/usr/bin/dmenu -i -dim 0.3 -h 26 -p 'Type to search' -fn 'FiraCode-10' -nb '#1C2541' -nf '#FFECF2' -sb '#3A506B' -sf '#6FFFE9' $@
