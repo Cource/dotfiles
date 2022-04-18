@@ -7,11 +7,11 @@ xinput set-prop "CUST0001:00 06CB:CDA1 Touchpad" "libinput Tapping Enabled" 1
 xinput set-prop "CUST0001:00 06CB:CDA1 Touchpad" "libinput Natural Scrolling Enabled" 1
 
 
-# Set up icon tray
+# Set up icon tray  ## Being done by Xmonad directly
 # sleep 10; trayer --edge top --align center --width 5 --height 18 --distancefrom left --distance 300 --transparent true --alpha 0 --tint 0x1C2541
 # trayer --edge bottom --align right --SetPartialStrut true --expand true --width 10 --transparent true --height 20 &
 
 # Set wallpaper
-nitrogen --restore &
+feh --bg-fill --no-fehbg --randomize ~/Pictures/wallpapers/*
 
 exec ~/.cache/xmonad/xmonad-x86_64-linux
