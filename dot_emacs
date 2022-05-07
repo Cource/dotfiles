@@ -18,6 +18,7 @@
 
 
 (setq inhibit-startup-screen t) ; Disable startup screen
+(setq-default cursor-type 'bar) ; Set cursor to a bar: |
 (set-fringe-mode  20)  ; Add padding to the sides of the frame
 (scroll-bar-mode   0)  ; disable scrollbars
 (tooltip-mode      0)  ; disable tooltips
