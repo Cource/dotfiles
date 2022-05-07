@@ -16,7 +16,7 @@ import XMonad.Layout.NoBorders
 main :: IO ()
 main = do
     xmproc <- spawnPipe "picom"
-    xmproc <- spawnPipe "sleep 2 && trayer --edge top --align center --width 5 --height 26 --distancefrom left --distance 300 --transparent true --alpha 0 --tint 0x1C2541"
+    xmproc <- spawnPipe "sleep 2 && trayer --edge top --align center --width 5 --height 26 --distancefrom left --distance 300 --transparent true --alpha 0 --tint 0x0B2422"
     xmonad
      . ewmhFullscreen
      . ewmh
@@ -29,8 +29,8 @@ main = do
 myConfig = desktopConfig
     { terminal = "alacritty"
     , modMask = mod4Mask
-    , normalBorderColor = "#1C2541"
-    , focusedBorderColor = "#6FFFE9"
+    , normalBorderColor = "#0B2422"
+    , focusedBorderColor = "#51A59D"
     , layoutHook = (lessBorders OnlyFloat) myLayoutHook
     }
     `additionalKeysP` myKeymaps
@@ -61,7 +61,7 @@ myXmobarPP :: PP
 myXmobarPP = def
     { ppSep             = "    "
     , ppTitleSanitize   = xmobarStrip
-    , ppCurrent         = wrap " " "" . xmobarBorder "Top" "#6FFFE9" 2
+    , ppCurrent         = wrap " " "" . xmobarBorder "Top" "#51A59D" 2
     , ppHidden          = bgLight . wrap " " ""
     , ppUrgent          = fgPrimary . wrap (fgPrimary "!") (fgPrimary "!")
     , ppOrder           = \[ws, l, _, wins] -> [ws, l, wins]
@@ -74,10 +74,12 @@ myXmobarPP = def
     ppWindow :: String -> String
     ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
 
+
+    -- Colors
     bgDarker, bgDark, bgLight, fgWhite, fgPrimary :: String -> String
-    bgDarker  = xmobarColor "#0B132B" ""
-    bgDark    = xmobarColor "#1C2541" ""
-    bgLight   = xmobarColor "#3A506B" ""
-    fgWhite   = xmobarColor "#FFECF2" ""
-    fgPrimary = xmobarColor "#6FFFE9" ""
+    bgDarker  = xmobarColor "#0B2422" ""
+    bgDark    = xmobarColor "#1E5954" ""
+    bgLight   = xmobarColor "#51A59D" ""
+    fgWhite   = xmobarColor "#E9FFFA" ""
+    fgPrimary = xmobarColor "#51A59D" ""
 
