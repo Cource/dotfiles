@@ -30,13 +30,13 @@ Config { overrideRedirect = False
                         [ "--template", "<fn=1></fn> <total>%"
                         , "-L",       "3"
                         , "-H",       "50"
-                        , "--high"  , "red"
-                        , "--normal", "green"
+                        , "--high"  , "#FF6767"
+                        , "--normal", "#57C784"
                         ] 10
                     , Run Battery
                         [ "--template", "<acstatus>"
                         , "-L", "25"
-                        , "-l", "red"
+                        , "-l", "#FF6767"
                         , "--"
                         , "-i", "<fn=1><fc=#51A59D></fc></fn>"
                         , "-O", "<fn=1></fn> <left>%"
@@ -61,7 +61,7 @@ Config { overrideRedirect = False
                     , Run ThermalZone 0
                         [ "--template", "<temp>°"
                         , "-H",         "70"
-                        , "--high",     "red"
+                        , "--high",     "#FF6767"
                         ] 30
                     , Run DynNetwork
                         [ "--template", "<fn=1></fn> <dev> <fn=1></fn> <rx>KB/s <fn=1></fn> <tx>KB/s"
