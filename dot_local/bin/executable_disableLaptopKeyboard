@@ -1,10 +1,42 @@
 #! /bin/sh
 
-if [ $1 = '-e' ]
-then
-    printf "Enabling Laptop Keyboard\n";
-    xinput reattach 18 3
-else
-    printf "Disabling Laptop Keyboard\nDo:\n\ndisableLaptopKeyboard -e\n\nto enable it again\n"
-    xinput float 18
-fi
+Keyboard="AT Translated Set 2 keyboard"
+
+for arg in $@; do
+    if [[ $(echo $arg | head -c2) == '--' ]]; then
+	shift
+	set -- "$@" $(echo $arg | cut -c 2,3)
+    fi
+done
+
+while getopts ":he" option; do
+    case $option in
+	e)
+	    echo "Enabling Laptop Keyboard";
+	    xinput reattach "$Keyboard" "Virtual core keyboard"
+	    exit;;
+	h)
+	    echo "Temporarily disable the built in keyboard in msi laptops."
+	    echo
+	    echo "Set Keyboard variable to the name of your keyboard's name for use in non msi laptops."
+	    echo "You may obtain the keyboard name by running xinput without any arguments"
+	    echo
+	    echo "Usage:" $(echo $0 | sed 's/.*\///') "[options]"
+	    echo "Options:"
+	    echo "  -e, --enable    Enables the keyboard"
+	    echo "  -h, --help      Displays this help message"
+	    echo
+	    exit;;
+	\?)
+	    printf "ERROR: Invalid option %s\n" $(echo $@)
+	    exit;;
+    esac
+done
+
+echo "Disabling laptop keyboard (" $Keyboard ")"
+echo
+echo "Run:"
+echo $(echo $0 | sed 's/.*\///') "-e"
+echo "To enable it again"
+xinput float "$Keyboard"
+
