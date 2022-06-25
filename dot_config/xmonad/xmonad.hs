@@ -41,6 +41,7 @@ myConfig = desktopConfig
 myKeymaps :: [ ([Char], X()) ]
 myKeymaps =
     [ ("s-p", spawn "dmenu_run -i -p 'Type to search' -fn 'FiraCode-10' -nb '#0B2422' -nf '#E9FFFA' -sb '#2A6F69'")
+    , ("<Print>", spawn "flameshot gui")
     , ("<XF86MonBrightnessUp>", spawn "light -A 10")
     , ("C-<XF86MonBrightnessUp>", spawn "light -A 1")
     , ("<XF86MonBrightnessDown>", spawn "light -U 10")
