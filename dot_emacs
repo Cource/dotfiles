@@ -1,11 +1,25 @@
+;; Internal Logic
+;; -------------------------------------------------------------------
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))  ; Melpa package repository
+(package-initialize)
+
+;; Stuff set by emacs
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(gruvbox-theme emmet-mode smex smooth-scrolling magit org visual-fill-column lsp-haskell lsp-mode elm-mode expand-region haskell-mode doom-themes)))
+
+
 
 ;; Visual tweaks
-;; -------------
-
+;; -------------------------------------------------------------------
 (load-theme 'gruvbox-dark-medium t)
 
 ;; Font setup
-
 (set-face-attribute 'default nil
 		    :font "FiraCode"
 		    :height 130)
@@ -16,44 +30,48 @@
 		    :font "Atkinson Hyperlegible"
 		    :height 150)
 
-
-
 (setq inhibit-startup-screen t) ; Disable startup screen
 (setq-default cursor-type 'bar) ; Set cursor to a bar: |
 ;(set-fringe-mode  20)  ; Add padding to the sides of the frame
-(set-fringe-mode   0)
-(scroll-bar-mode   0)  ; disable scrollbars
-(tooltip-mode      0)  ; disable tooltips
-(menu-bar-mode     0)  ; disable menubar
-(tool-bar-mode     0)  ; disable toolbar
+(set-fringe-mode    0)  ; disable padding at the sides of the frame
+(scroll-bar-mode    0)  ; disable scrollbars
+(tooltip-mode       0)  ; disable tooltips
+(menu-bar-mode      0)  ; disable menubar
+(tool-bar-mode      0)  ; disable toolbar
+(line-number-mode   0)  ; disable line number in mode line
+(column-number-mode 1)  ; enabled column number in mode line
 (global-display-line-numbers-mode  t)  ; enable line numbers
+(global-display-fill-column-indicator-mode t)  ; enable column line
+(smooth-scrolling-mode t)  ; less jarring scrolling in emacs
 
-(ido-mode 1)  ; completion for some minibuffer actions
-(global-set-key (kbd "M-x") 'smex) ; ido-mode like completion for emacs commands
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; This is your old M-x.
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-
-
-;; Extra theming
+;; more padding around the modeline
 (dolist (face '(mode-line mode-line-inactive))
   (set-face-attribute face nil
 		      :box '(:line-width 10 :color "#3c3836")
 		      :background "#3c3836"))
 
-;; Internal Logic
-;; --------------
 
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))  ; Melpa package repository
-(package-initialize)
-
+;; Keybindings and minibuffer modifications
+;; -------------------------------------------------------------------
+(ido-mode 1)  ; completion for some minibuffer actions
+(global-set-key (kbd "M-x") 'smex) ; ido-mode like completion for emacs commands
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 (global-set-key [67108925] 'er/expand-region)  ; Set C-= to expand-region
 
 
 
-;; Org mode
+;; Language Specific customizations
+;; -------------------------------------------------------------------
 
+;; HTML
+;; emmet mode config
+(add-hook 'sgml-mode-hook 'emmet-mode) ; Auto-start on any markup modes
+(add-hook 'css-mode-hook  'emmet-mode) ; enable Emmet's css abbreviation.
+;; -------------------------------------------------------------------
+
+;; Org mode
 (defun config/org-init ()
   (setq org-ellipsis " ▾"
 	visual-fill-column-width       100
@@ -95,26 +113,4 @@
 )
 
 (add-hook 'org-mode-hook (lambda () (config/org-init)))
-
-;; HTML stuff
-;; emmet mode config
-(add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
-(add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
-
-;; Variables set by emacs
-;; ----------------------
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(gruvbox-theme emmet-mode smex smooth-scrolling magit org visual-fill-column lsp-haskell lsp-mode elm-mode expand-region haskell-mode doom-themes)))
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;; -------------------------------------------------------------------
