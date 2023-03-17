@@ -12,11 +12,13 @@ import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 
 import XMonad.Layout.NoBorders
+import XMonad.Layout.Spacing
 
 main :: IO ()
 main = do
-    xmproc <- spawnPipe "picom"
-    xmproc <- spawnPipe "sleep 2 && trayer --edge top --align center --width 5 --height 26 --distancefrom left --distance 300 --transparent true --alpha 0 --tint 0x0B2422"
+    xmproc <- spawnPipe "picom"  -- X11 Compositor
+    xmproc <- spawnPipe "sleep 2 && trayer --edge top --align right --width 10 --height 35 --distancefrom right --distance 450 --transparent true --alpha 0 --tint 0x0B2422"
+    xmproc <- spawnPipe "wired"  -- Notification manager
     xmonad
      . ewmhFullscreen
      . ewmh
@@ -29,8 +31,9 @@ main = do
 myConfig = desktopConfig
     { terminal = "alacritty"
     , modMask = mod4Mask
-    , normalBorderColor = "#0B2422"
+    , borderWidth = 2
     , focusedBorderColor = "#51A59D"
+    , normalBorderColor = "#1E5954"
     , layoutHook = (lessBorders OnlyFloat) myLayoutHook
     }
     `additionalKeysP` myKeymaps
@@ -40,7 +43,7 @@ myConfig = desktopConfig
 --
 myKeymaps :: [ ([Char], X()) ]
 myKeymaps =
-    [ ("s-p", spawn "dmenu_run -i -p 'Type to search' -fn 'FiraCode-10' -nb '#0B2422' -nf '#E9FFFA' -sb '#2A6F69'")
+    [ ("s-p", spawn "dmenu_run")
     , ("<Print>", spawn "flameshot gui")
     , ("<XF86MonBrightnessUp>", spawn "light -A 10")
     , ("C-<XF86MonBrightnessUp>", spawn "light -A 1")
@@ -54,7 +57,7 @@ myKeymaps =
 -- Layout
 --
 myLayoutHook = tiled ||| noBorders Full ||| Mirror tiled
-    where tiled = Tall 1 (3/100) (3/5)
+    where tiled = smartBorders $ spacingWithEdge 4 $ Tall 1 (3/100) (3/5)
 
 --
 -- Formatting messages to xmobar
@@ -66,15 +69,15 @@ myXmobarPP = def
     , ppCurrent         = wrap " " "" . xmobarBorder "Top" "#51A59D" 2
     , ppHidden          = bgLight . wrap " " ""
     , ppUrgent          = fgPrimary . wrap (fgPrimary "!") (fgPrimary "!")
-    , ppOrder           = \[ws, l, _, wins] -> [ws, l, wins]
+    , ppOrder           = \[ws, _, _, wins] -> [ws, wins]
     , ppExtras          = [logTitles formatFocused formatUnfocused]
     }
   where
-    formatFocused   = fgPrimary . ppWindow
-    formatUnfocused = bgLight . ppWindow
+    formatFocused   = fgWhite . ppWindow
+    formatUnfocused = bgDark . ppWindow
 
     ppWindow :: String -> String
-    ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
+    ppWindow = xmobarRaw . (\w -> if null w then "Untitled" else w) . shorten 50
 
 
     -- Colors
@@ -84,4 +87,3 @@ myXmobarPP = def
     bgLight   = xmobarColor "#51A59D" ""
     fgWhite   = xmobarColor "#E9FFFA" ""
     fgPrimary = xmobarColor "#51A59D" ""
-

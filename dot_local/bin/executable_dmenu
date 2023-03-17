@@ -1,2 +1,2 @@
 #! /bin/sh
-/usr/bin/dmenu -i -dim 0.3 -h 26 -p 'Type to search' -fn 'FiraCode-10' -nb '#0B2422' -nf '#E9FFFA' -sb '#2A6F69' $@
+/usr/bin/dmenu -i -l 5 -dim 0.5 -h 35 -w 400 -x 8 -y 43 -l 20 -p 'Execute' -fn 'FiraCode-10' -nb '#0B2422' -nf '#E9FFFA' -sb '#2A6F69' $@

@@ -5,7 +5,8 @@ capsToCtrl
 xinput set-prop "CUST0001:00 06CB:CDA1 Touchpad" "libinput Tapping Enabled" 1
 # Natural scrolling
 xinput set-prop "CUST0001:00 06CB:CDA1 Touchpad" "libinput Natural Scrolling Enabled" 1
-
+# do not disable trackpad on keypress
+xinput set-prop "CUST0001:00 06CB:CDA1 Touchpad" "libinput Disable While Typing Enabled" 0
 
 # Set up icon tray  ## Being done by Xmonad directly
 # sleep 10; trayer --edge top --align center --width 5 --height 18 --distancefrom left --distance 300 --transparent true --alpha 0 --tint 0x1C2541
@@ -13,5 +14,6 @@ xinput set-prop "CUST0001:00 06CB:CDA1 Touchpad" "libinput Natural Scrolling Ena
 
 # Set wallpaper
 feh --bg-fill --no-fehbg --randomize ~/Pictures/wallpapers/*
+#feh --bg-fill --no-fehbg ~/Pictures/wallpapers/yuru-camp-fujisan.jpg
 
 exec ~/.cache/xmonad/xmonad-x86_64-linux

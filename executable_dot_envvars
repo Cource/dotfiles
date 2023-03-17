@@ -1,6 +1,9 @@
-export PATH="/home/cource/.local/bin:"$PATH
+export PATH="/home/cource/.local/bin:/home/cource/.nix-profile/bin:"$PATH
 export EDITOR=nvim
 export PROMPT="%B%F{8}[%f%b%F{10}%n%f%F{8}@%f%F{240}%m%f %~%B%F{8}] %f%b"
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
 
 # for making every application render on Nvidia GPU
 #export __NV_PRIME_RENDER_OFFLOAD=1
