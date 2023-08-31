@@ -118,6 +118,8 @@
   :ensure t
   :config (global-set-key (kbd "C-=") 'er/expand-region))
 
+(leaf magit
+  :ensure t)
 
 ;; Language specific
 ;;--------------------------------------------------------------------|

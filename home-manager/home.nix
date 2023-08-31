@@ -73,6 +73,7 @@ in
       ligature
       vertico
       expand-region
+      magit
       # Language packages
       nix-mode
       elm-mode
