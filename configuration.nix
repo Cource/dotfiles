@@ -11,6 +11,11 @@
       ./nvidia.nix
     ];
 
+  nix.package = pkgs.nixUnstable;
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 10;
@@ -55,8 +60,6 @@
     xserver = {
       enable = true;
       layout = "us";
-
-      displayManager.lightdm.background = /home/cource/Images/wallpapers/oldHouse.jpg;
 
       desktopManager.session = [
         {
