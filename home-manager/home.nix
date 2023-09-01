@@ -12,7 +12,7 @@ in
   home = {
     packages = with pkgs;
       [ font-awesome
-        light
+        brightnessctl
         webcord
         helvum
         # (emacsWithPackagesFromUsePackage {
@@ -55,8 +55,7 @@ in
     vSync = true;
     backend = "glx";
     fade = true;
-    fadeDelta = 3;
-    inactiveOpacity = 1;
+    fadeDelta = 2;
     settings = { 
       corner-radius = 10;
     };

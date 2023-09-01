@@ -48,8 +48,11 @@ myKeymaps :: [ ([Char], X()) ]
 myKeymaps =
     [ ("M4-p", spawn "rofi -show drun")
     , ("<Print>", spawn "flameshot gui")
-    , ("<XF86AudioRaiseVolume>", spawn "wpctl set-volume 98 10%+")
-    , ("<XF86AudioLowerVolume>", spawn "wpctl set-volume 98 10%-")
+    , ("<XF86AudioRaiseVolume>", spawn "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 10%+")
+    , ("<XF86AudioLowerVolume>", spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-")
+    , ("<XF86AudioMute>", spawn "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")
+    , ("S-<XF86AudioLowerVolume>", spawn "brightnessctl -n set 5%-")
+    , ("S-<XF86AudioRaiseVolume>", spawn "brightnessctl -n set +5%")
     ]
 
 --

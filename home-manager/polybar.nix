@@ -26,7 +26,7 @@ pkgs: colors: {
       modules = {
         left = "xmonad";
         center = "date";
-        right = "wired-network wireless-network backlight battery";
+        right = "wired-network wireless-network wireplumber backlight battery";
       };
     };
     "module/date" = {
@@ -58,26 +58,18 @@ pkgs: colors: {
       "inherit" = "module/network";
       interface-type = "wireless";
     };
-    "module/pulseaudio" = {
-      type = "internal/pulseaudio";
-      format-volume = "<ramp-volume> <label-volume>";
-      format-muted = " muted";
-      format-muted-foreground = colors.FG2;
-      ramp = {
-        volume-0 = "";
-        volume-1 = "";
-        volume-2 = "";
-      };
-      click-right = "pavucontrol";
+    "module/wireplumber" = {
+      type = "custom/script";
+      exec = "${pkgs.wireplumber}/bin/wpctl get-volume @DEFAULT_AUDIO_SINK@ | ${pkgs.gnused}/bin/sed 's/Volume: //;s/0.00/0/;s/0\\.//;s/\\.//;s/$/%/;s/.* //;s/]%/]/'";
+      interval = 1;
+      format = " <label>";
     };
     "module/backlight" = {
       type = "internal/backlight";
       card = "intel_backlight";
       enable-scroll = true;
-      format = "<ramp> <label>";
+      format = " <label>";
       label = "%percentage%%";
-      ramp-0 = "";
-      ramp-1 = "";
     };
     "module/battery" = {
       type = "internal/battery";
