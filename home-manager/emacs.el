@@ -44,6 +44,7 @@
 (column-number-mode 1)          ; enabled column number in mode line
 (global-display-line-numbers-mode t)           ; enable line numbers
 (global-display-fill-column-indicator-mode t) ; enable standard line width indicator
+(setq visible-bell 1)
 
 (leaf gruvbox-theme
   :doc "The gruvbox theme used across emacs"
