@@ -58,6 +58,7 @@ in
     fadeDelta = 2;
     settings = { 
       corner-radius = 10;
+      inactive-opacity-override = true;
     };
   };
 
