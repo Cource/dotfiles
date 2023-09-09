@@ -78,7 +78,7 @@
 
       xkbOptions = "caps:ctrl_modifier";
     };
-
+    
     pipewire = {
       enable = true;
       alsa.enable = true;
