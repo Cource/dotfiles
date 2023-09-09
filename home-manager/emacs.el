@@ -102,8 +102,8 @@
                             ("~" (rx (or ">" "=" "-" "@" "~>" (+ "~"))))
                             ("_" (rx (+ (or "_" "|"))))
                             ("0" (rx (and "x" (+ (in "A-F" "a-f" "0-9")))))
-                              "Fl"  "Tl"  "fi"  "fj"  "fl"  "ft"
-                              "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
+                            "Fl"  "Tl"  "fi"  "fj"  "fl"  "ft"
+                            "{|"  "[|"  "]#"  "(*"  "}#"  "$>"  "^="))
   (global-ligature-mode t))
 
 (leaf vertico
@@ -122,6 +122,8 @@
 (leaf magit
   :ensure t)
 
+(leaf visual-fill-column)
+
 ;; Language specific
 ;;--------------------------------------------------------------------|
 
@@ -134,3 +136,44 @@
 
 (leaf sass-mode
   :config (leaf haml-mode :ensure t))
+
+(leaf org
+  :setq ((org-ellipsis                   . " ▾")
+	 (visual-fill-column-width       .  100)
+	 (visual-fill-column-center-text .    t))
+  :hook (org-mode-hook . config/org-init)
+  :config
+  (defun config/org-init ()
+     (variable-pitch-mode 1)    ; Normal font mode
+
+     (dolist (face '((org-level-1 . 2.3)    ; To increase font size of the headings based on
+                     (org-level-2 . 1.9)    ; heading level
+                     (org-level-3 . 1.5)
+                     (org-level-4 . 1.3)
+                     (org-level-5 . 1.1)
+                     (org-level-6 . 1.1)
+                     (org-level-7 . 1.1)
+                     (org-level-8 . 1.1)
+		     (org-document-title . 2.3)))
+       (set-face-attribute (car face) nil
+			   :font   "Atkinson HyperLegible"
+			   :weight 'bold
+			   :height (cdr face)))
+
+     ;; Setting special text blocks' font face as fixed-pitch for better alignment
+     (dolist (face '((org-code            . (shadow fixed-pitch))
+		     (org-table           . (shadow fixed-pitch))
+		     (org-verbatim        . (shadow fixed-pitch))
+		     (org-special-keyword . (font-lock-comment-face fixed-pitch))
+		     (org-meta-line       . (font-lock-comment-face fixed-pitch))
+		     (org-checkbox        . fixed-pitch)
+		     (org-block           . fixed-pitch)))
+       (set-face-attribute (car face) nil
+			   :inherit (cdr face)))
+
+     (visual-fill-column-mode   1)  ; To center the window
+     (auto-fill-mode    1)          ; Wrap text after 78 characters
+     (set-fill-column  78)
+     (display-line-numbers-mode 0)
+     (org-indent-mode   1)))
+

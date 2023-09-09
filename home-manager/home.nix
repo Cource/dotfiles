@@ -80,6 +80,8 @@ in
       haskell-mode
       sass-mode
       haml-mode
+      org
+      visual-fill-column
     ];
     extraConfig = builtins.readFile ./emacs.el;
   };
