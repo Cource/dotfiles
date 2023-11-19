@@ -16,6 +16,7 @@ import qualified DBus.Client                           as D
 
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Spacing
+import XMonad.Layout.SimplestFloat
 
 main :: IO ()
 main = mkDbusClient >>= main'
@@ -58,7 +59,7 @@ myKeymaps =
 --
 -- Layout
 --
-myLayoutHook = avoidStruts (tiled) ||| noBorders Full ||| avoidStruts (Mirror tiled)
+myLayoutHook = avoidStruts (tiled) ||| noBorders Full ||| avoidStruts (Mirror tiled) ||| simplestFloat
     where tiled = smartBorders
             $ spacingWithEdge 4 $ Tall 1 (3/100) (3/5)
 
