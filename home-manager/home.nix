@@ -15,6 +15,8 @@ in
         brightnessctl
         webcord
         helvum
+        logseq
+        foliate
         # (emacsWithPackagesFromUsePackage {
         #   config = ./emacs.el;
 	      #   extraEmacsPackages = epkgs: [ epkgs.leaf ];
@@ -192,5 +194,7 @@ in
   services.easyeffects = {
     enable = true;
   };
+
+  services.syncthing.enable = true;
 }
 
