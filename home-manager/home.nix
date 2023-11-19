@@ -82,6 +82,7 @@ in
       haskell-mode
       sass-mode
       haml-mode
+      rust-mode
       org
       visual-fill-column
     ];
