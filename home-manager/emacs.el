@@ -25,6 +25,7 @@
 ;;--------------------------------------------------------------------|
 (set-face-attribute 'default nil
 		    :font "FiraCode"
+		    :weight 'medium
 		    :height 120)
 (set-face-attribute 'fixed-pitch nil
 		    :font "FiraCode"
@@ -50,7 +51,7 @@
   :doc "The gruvbox theme used across emacs"
   :ensure t
   :config
-  (load-theme 'gruvbox-dark-medium t))
+  (load-theme 'gruvbox-dark-hard t))
 
 (leaf smooth-scrolling
   :doc "Less jarring scrolling in windows"
