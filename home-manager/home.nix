@@ -1,5 +1,11 @@
-{config, pkgs, ...}:
-
+{
+  inputs,
+  outputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   colors = {
     BG1 = "#1E5954";
@@ -9,32 +15,25 @@ let
   };
 in
 {
-  home = {
-    packages = with pkgs;
-      [ font-awesome
-        brightnessctl
-        webcord
-        helvum
-        logseq
-        foliate
-        # (emacsWithPackagesFromUsePackage {
-        #   config = ./emacs.el;
-	      #   extraEmacsPackages = epkgs: [ epkgs.leaf ];
-        #   defaultInitFile = true;
-        #   alwaysEnsure = true;
-        # })
-      ];
-    stateVersion = "23.05";
-  };
-  programs.zsh = {
-    enable = true;
-    syntaxHighlighting.enable = true;
-    prezto = {
-      enable = true;
-      caseSensitive = false;
-      editor.keymap = "emacs";
-      prompt.theme = "walters";
+  imports = [
+  ];
+
+  nixpkgs = {
+    overlays = [
+      outputs.overlays.additions
+      outputs.overlays.modifications
+      outputs.overlays.unstable-packages
+      inputs.nur.overlay
+    ];
+    config = {
+      allowUnfree = true;
+      allowUnfreePredicate = _: true;
     };
+  };
+
+  home = {
+    username = "cource";
+    homeDirectory = "/home/cource";
   };
   
   xsession = {
@@ -52,64 +51,82 @@ in
     };
   };
 
-  services.picom = {
-    enable = true;
-    vSync = true;
-    backend = "glx";
-    fade = true;
-    fadeDelta = 2;
-    settings = { 
-      corner-radius = 10;
-      inactive-opacity-override = true;
+  services = {
+    syncthing.enable = true;
+    polybar = import ./polybar.nix pkgs colors;
+
+    picom = {
+      enable = true;
+      vSync = true;
+      backend = "glx";
+      fade = true;
+      fadeDelta = 2;
+      settings = { 
+        corner-radius = 10;
+        inactive-opacity-override = true;
+      };
+    };
+
+    easyeffects = {
+      enable = true;
+    };
+
+    emacs = {
+      enable = false;
+      client.enable = false;
     };
   };
 
-  programs.emacs = {
-    package = pkgs.emacs29;
-    enable = true;
-    extraPackages = epkgs: with epkgs; [
-      leaf
-	    leaf-keywords
-      gruvbox-theme
-      smooth-scrolling
-      mood-line
-      ligature
-      vertico
-      expand-region
-      magit
-      # Language packages
-      nix-mode
-      elm-mode
-      haskell-mode
-      sass-mode
-      haml-mode
-      rust-mode
-      org
-      visual-fill-column
-    ];
-    extraConfig = builtins.readFile ./emacs.el;
-  };
-  services.emacs = {
-    enable = false;
-    client.enable = false;
-  };
+  programs = {
+    zsh = {
+      enable = true;
+      syntaxHighlighting.enable = true;
+      prezto = {
+        enable = true;
+        caseSensitive = false;
+        editor.keymap = "emacs";
+        prompt.theme = "walters";
+      };
+    };
 
-  services.polybar = import ./polybar.nix pkgs colors;
-  systemd.user.services.polybar = {
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
-  
-  programs.rofi= {
-    enable = true;
-    font = "Atkinson Hyperlegible 14";
-    theme = with colors;
+    emacs = {
+      package = pkgs.emacs29;
+      enable = true;
+      extraPackages = epkgs: with epkgs; [
+        leaf
+          leaf-keywords
+          gruvbox-theme
+          smooth-scrolling
+          mood-line
+          ligature
+          vertico
+          expand-region
+          magit
+# Language packages
+          nix-mode
+          elm-mode
+          haskell-mode
+          sass-mode
+          haml-mode
+          rust-mode
+          org
+          visual-fill-column
+      ];
+      extraConfig = builtins.readFile ./emacs.el;
+    };
+
+
+    rofi= {
+      enable = true;
+      font = "Atkinson Hyperlegible 14";
+      theme = with colors;
       let
         inherit (config.lib.formats.rasi) mkLiteral;
-        darkGreen   = mkLiteral BG2;
-        green       = mkLiteral BG1;
-        lightGreen  = mkLiteral FG2;
-        white       = mkLiteral FG1;
-        transparent = mkLiteral "#00000000";
+      darkGreen   = mkLiteral BG2;
+      green       = mkLiteral BG1;
+      lightGreen  = mkLiteral FG2;
+      white       = mkLiteral FG1;
+      transparent = mkLiteral "#00000000";
       in {
         "*" = {
           background-color = transparent;
@@ -143,60 +160,57 @@ in
           background-color = darkGreen;
         };
       };
-  };
+    };
 
-  programs.alacritty = {
-    enable = true;
-    settings = {
-      font = {
-        normal = {
-          family = "Fira Code";
-          style = "Regular";
+    alacritty = {
+      enable = true;
+      settings = {
+        font = {
+          normal = {
+            family = "Fira Code";
+            style = "Regular";
+          };
+          size = 8;
         };
-        size = 8;
-      };
-      window = {
-        opacity = 0.9;
-        padding = {
-          x = 5;
-          y = 5;
+        window = {
+          opacity = 0.9;
+          padding = {
+            x = 5;
+            y = 5;
+          };
         };
       };
     };
-  };
-  
-  programs.firefox = {
-    enable = true;
-    profiles.cource = {
-      isDefault = true;
-      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-        ublock-origin
-        sidebery
-      ];
-      search = {
-        default = "DuckDuckGo";
-        order = [
-          "DuckDuckGo"
-          "Google"
+
+    firefox = {
+      enable = true;
+      profiles.cource = {
+        isDefault = true;
+        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+          ublock-origin
+            sidebery
         ];
+        search = {
+          default = "DuckDuckGo";
+          order = [
+            "DuckDuckGo"
+              "Google"
+          ];
+        };
+        userChrome = ''
+#TabsToolbar { visibility: collapse !important; }
+#sidebar-header { display: none !important; }
+          '';
       };
-      userChrome = ''
-        #TabsToolbar { visibility: collapse !important; }
-        #sidebar-header { display: none !important; }
-        '';
+    };
+
+    git = {
+      enable = true;
+      userEmail = "jeffjacobjoy@gmail.com";
+      userName = "cource";
     };
   };
 
-  programs.git = {
-    enable = true;
-    userEmail = "jeffjacobjoy@gmail.com";
-    userName = "cource";
-  };
-
-  services.easyeffects = {
-    enable = true;
-  };
-
-  services.syncthing.enable = true;
+  systemd.user.startServices = "sd-switch";
+  home.stateVersion = "23.05";
 }
-
