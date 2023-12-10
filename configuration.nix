@@ -98,7 +98,7 @@
     extraGroups = [ "wheel" "adbusers" "video" ];
     shell = pkgs.zsh;
   };
-  fonts.fonts = [
+  fonts.packages = [
     pkgs.fira-code
     pkgs.atkinson-hyperlegible
     pkgs.noto-fonts

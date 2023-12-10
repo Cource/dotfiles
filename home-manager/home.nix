@@ -28,7 +28,7 @@ in
   };
   programs.zsh = {
     enable = true;
-    enableSyntaxHighlighting = true;
+    syntaxHighlighting.enable = true;
     prezto = {
       enable = true;
       caseSensitive = false;
