@@ -23,6 +23,7 @@ in
       outputs.overlays.additions
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
+      outputs.homeManagerModules.hardened-firefox
       inputs.nur.overlay
     ];
     config = {
@@ -53,6 +54,7 @@ in
 
   services = {
     syncthing.enable = true;
+    hardened-firefox.enable = true;
     polybar = import ./polybar.nix pkgs colors;
 
     picom = {
@@ -179,28 +181,6 @@ in
             y = 5;
           };
         };
-      };
-    };
-
-    firefox = {
-      enable = true;
-      profiles.cource = {
-        isDefault = true;
-        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-          ublock-origin
-            sidebery
-        ];
-        search = {
-          default = "DuckDuckGo";
-          order = [
-            "DuckDuckGo"
-              "Google"
-          ];
-        };
-        userChrome = ''
-#TabsToolbar { visibility: collapse !important; }
-#sidebar-header { display: none !important; }
-          '';
       };
     };
 

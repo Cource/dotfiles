@@ -11,6 +11,7 @@
     };
 
     nur.url = "github:nix-community/nur";
+    arkenfox.url = "github:dwarfmaster/arkenfox-nixos/main";
   };
 
   outputs = {
