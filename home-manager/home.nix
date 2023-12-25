@@ -14,16 +14,10 @@ in
       [ (nerdfonts.override { fonts=["NerdFontsSymbolsOnly"]; })
         xmonad-log
         brightnessctl
-        webcord
+        vesktop
         helvum
         logseq
         foliate
-        # (emacsWithPackagesFromUsePackage {
-        #   config = ./emacs.el;
-	      #   extraEmacsPackages = epkgs: [ epkgs.leaf ];
-        #   defaultInitFile = true;
-        #   alwaysEnsure = true;
-        # })
       ];
     stateVersion = "23.05";
   };
