@@ -11,7 +11,8 @@ in
 {
   home = {
     packages = with pkgs;
-      [ font-awesome
+      [ (nerdfonts.override { fonts=["NerdFontsSymbolsOnly"]; })
+        xmonad-log
         brightnessctl
         webcord
         helvum
@@ -84,6 +85,7 @@ in
       sass-mode
       haml-mode
       rust-mode
+      yuck-mode
       org
       visual-fill-column
     ];
@@ -101,11 +103,6 @@ in
   programs.eww = {
     enable = true;
     configDir = ./eww-config;
-  };
-  systemd.user.services.eww = {
-    Unit.Description = "Eww desktop widgets";
-    Service.ExecStart = "eww open-many statusbar home";
-    Install.WantedBy = ["graphical-session.target"];
   };
   
   programs.rofi= {

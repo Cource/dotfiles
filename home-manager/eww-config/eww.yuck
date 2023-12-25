@@ -1,9 +1,3 @@
-(defpoll TIME :interval "5s"
-	 `date +"%H":"%M"`)
-(defpoll DATE :interval "1m"
-	 `date +"%d %b, %Y"`)
-(defpoll DAY :interval "1m"
-	 `date +"%A"`)
 (defpoll BRIGHTNESS :interval "2s"
 	 `brightnessctl info -m | cut -d, -f4`)
 (defpoll NETWORK :interval "2s"
@@ -19,6 +13,7 @@
 
 (defwindow statusbar
     :windowtype "dock"
+    :reserve (struts :side "top" :distance "4.1%")
     :geometry (geometry
 	       :width "99.2%"
 	       :height "3.5%"
@@ -29,8 +24,8 @@
 	 (box :halign "center"
 	      :space-evenly false
 	      :spacing 10
-	      (box :class "time" TIME)
-	      (box :class "date" DATE))
+	      (label :class "time" :text {formattime(EWW_TIME, "%H:%M")})
+	      (label :class "date" :text {formattime(EWW_TIME, "%d %b, %Y")}))
 	 (sys_info)))
 
 (defwidget sys_info []
@@ -38,7 +33,7 @@
        :halign "end"
        :space-evenly false
        :spacing 20
-       (network)
+       (network :minimal true)
        (box :space-evenly false :spacing 5 "󰕾" VOLUME)
        (box :space-evenly false :spacing 5 "" BRIGHTNESS)
        (battery_info)))
@@ -52,19 +47,24 @@
 		(label :text {EWW_BATTERY.BAT1.status == "Charging"?"󱐋":"󰁹"})
 		"${EWW_BATTERY.BAT1.capacity}%")))
 
-(defwidget network []
+(defwidget network [?minimal]
   (box :class "network"
        :space-evenly false
        :halign "start"
        :visible {NETWORK.type=="loopback" ? false : true}
        :spacing 5
-       {NETWORK.type=="wifi" ?
-           WIFI_QUALITY>75 ? "󰤨" :
-	   WIFI_QUALITY>50 ? "󰤥" :
-	   WIFI_QUALITY>25 ? "󰤢" :
-	   WIFI_QUALITY>10 ? "󰤟" : "󰤯"
-       : "󰈀"}
-       {NETWORK.name}))
+       (label :class "icon"
+	      :text {NETWORK.type=="wifi" ?
+			     WIFI_QUALITY>75 ? "󰤨" :
+			     WIFI_QUALITY>50 ? "󰤥" :
+			     WIFI_QUALITY>25 ? "󰤢" :
+			     WIFI_QUALITY>10 ? "󰤟" : "󰤯"
+		    : "󰈀"})
+       (box :orientation "v"
+	    :space-evenly false
+	    :valign "center"
+	    (label :halign "start" :text {NETWORK.name})
+	    (label :class "ip" :visible {minimal==""} :halign "start" :text IP))))
 
 (defwindow home
     :stacking "bg"
@@ -81,9 +81,7 @@
 	 (box :class "info"
 	      :orientation "v"
 	      :spacing 10
-	      (box :space-evenly false
-		   :orientation "v"
-		   (network) (label :class "ip" :halign "start" :text IP)))
-	 (label :class "day" :halign "start" :text DAY)
-	 (label :class "time" :halign "start" :text TIME)))
+	      (network))
+	 (label :class "day" :halign "start" :text {formattime(EWW_TIME, "%A")})
+	 (label :class "time" :text {formattime(EWW_TIME, "%_I:%M")})))
 

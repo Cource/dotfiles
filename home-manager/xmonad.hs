@@ -23,6 +23,7 @@ main :: IO ()
 main = mkDbusClient >>= main'
 
 main' dbus = do
+    xmproc <- spawnPipe "eww open-many statusbar home"
     xmonad
      . docks
      . ewmhFullscreen

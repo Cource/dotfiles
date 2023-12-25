@@ -19,12 +19,15 @@ $col-text: #fbe6b7;
     & .info {
 	font-size: 2em;
 	margin-bottom: 2rem;
-    }
-    & .info .ip {
-	font-size: 1rem;
-    }
-    & .info .network :nth-child(1) {
-	margin-right: 0.5em;
+	& .network {
+	    & .icon {
+		font-size: 2em;
+		margin-right: 1rem;
+	    }
+	    & .ip {
+		font-size: 1rem;
+	    }
+	}
     }
 }
 
