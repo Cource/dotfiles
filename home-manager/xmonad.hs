@@ -10,9 +10,10 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.FadeInactive        ( fadeInactiveLogHook )
-import qualified Codec.Binary.UTF8.String              as UTF8
-import qualified DBus                                  as D
-import qualified DBus.Client                           as D
+
+import qualified Codec.Binary.UTF8.String as UTF8
+import qualified DBus.Client              as DBusClient
+import DBus
 
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Spacing
@@ -38,7 +39,7 @@ myConfig dbus = desktopConfig
     , focusedBorderColor = "#51A59D"
     , normalBorderColor  = "#1E5954"
     , layoutHook         = (lessBorders OnlyFloat) myLayoutHook
-    , logHook            = myPolybarLogHook dbus
+    , logHook            = myLogHookWithSignal dbus
     }
     `additionalKeysP` myKeymaps
 
@@ -66,40 +67,57 @@ myLayoutHook = avoidStruts (tiled) ||| noBorders Full ||| avoidStruts (Mirror ti
 --
 -- Dbus signals to polybar
 --
-mkDbusClient :: IO D.Client
+mkDbusClient :: IO DBusClient.Client
 mkDbusClient = do
-  dbus <- D.connectSession
-  D.requestName dbus (D.busName_ "org.xmonad.log") opts
+  dbus <- DBusClient.connectSession
+  DBusClient.requestName dbus (DBus.busName_ "org.xmonad.log") opts
   return dbus
  where
-  opts = [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
+  opts =
+    [ DBusClient.nameAllowReplacement
+    , DBusClient.nameReplaceExisting
+    , DBusClient.nameDoNotQueue
+    ]
 
--- Emit a DBus signal on log updates
-dbusOutput :: D.Client -> String -> IO ()
+-- Emit a DBusBus signal on log updates
+dbusOutput :: DBusClient.Client -> String -> IO ()
 dbusOutput dbus str =
-  let opath  = D.objectPath_ "/org/xmonad/Log"
-      iname  = D.interfaceName_ "org.xmonad.Log"
-      mname  = D.memberName_ "Update"
-      signal = D.signal opath iname mname
-      body   = [D.toVariant $ UTF8.decodeString str]
-  in  D.emit dbus $ signal { D.signalBody = body }
+  let opath  = DBus.objectPath_ "/org/xmonad/Log"
+      iname  = DBus.interfaceName_ "org.xmonad.Log"
+      mname  = DBus.memberName_ "Update"
+      signal = DBus.signal opath iname mname
+      body   = [DBus.toVariant $ UTF8.decodeString str]
+  in  DBusClient.emit dbus $ signal { DBus.signalBody = body }
 
-polybarHook :: D.Client -> PP
-polybarHook dbus =
-  let wrapper c s | s /= "NSP" = wrap ("%{F" <> c <> "} ") " %{F-}" s
-                  | otherwise  = mempty
-      darkGreen  = "#0B2422"
-      green      = "#1E5954"
-      lightGreen = "#51A59D"
-      white      = "#E9FFFA"
-  in  def { ppOutput          = dbusOutput dbus
-          , ppCurrent         = wrapper lightGreen
-          , ppUrgent          = wrapper white
-          , ppHidden          = wrapper green
-          , ppTitle           = wrapper lightGreen . shorten 90
-          , ppSep             = "   "
-          }
+-- myPpHook :: DBusClient.Client -> PP -- PP means pretty print
+-- myPpHook dbus =
+--   let colorize color string =
+--         "%{F" <> color <> "} " <> string <> " %{F-}"
+  
+--       background = "#0B2422" -- dark green
+--       secondary  = "#1E5954" -- green
+--       accent     = "#51A59D" -- light green
+--       text       = "#E9FFFA" -- white like green
+      
+--   in  def { ppOutput          = dbusOutput dbus
+--           , ppCurrent         = colorize accent
+--           , ppUrgent          = colorize text
+--           , ppHidden          = colorize secondary
+--           , ppTitle           = colorize accent . shorten 90
+--           , ppSep             = "   "
+--           }
+myPpHook :: DBusClient.Client -> PP -- PP means pretty print
+myPpHook dbus =
+  def { ppOutput  = dbusOutput dbus . wrap "(box :space-evenly false :vexpand true" ")"
+      , ppCurrent = wrapClass "ws-current"
+      , ppUrgent  = wrapClass "ws-urgent"
+      , ppHidden  = wrapClass "ws-hidden"
+      , ppLayout  = wrapClass "ws-layout"
+      , ppTitle   = \_ -> ""
+      , ppSep     = "   "
+      }
+  where
+    wrapClass c = wrap ("(label :class \"" <> c <> "\" :text \"") "\")"
 
-myPolybarLogHook dbus = myLogHook <+> dynamicLogWithPP (polybarHook dbus)
+myLogHookWithSignal dbus = dynamicLogWithPP (myPpHook dbus)
 
-myLogHook = fadeInactiveLogHook 0.9

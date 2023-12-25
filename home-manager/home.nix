@@ -94,9 +94,18 @@ in
     client.enable = false;
   };
 
-  services.polybar = import ./polybar.nix pkgs colors;
-  systemd.user.services.polybar = {
-    Install.WantedBy = [ "graphical-session.target" ];
+  # services.polybar = import ./polybar.nix pkgs colors;
+  # systemd.user.services.polybar = {
+  #   Install.WantedBy = [ "graphical-session.target" ];
+  # };
+  programs.eww = {
+    enable = true;
+    configDir = ./eww-config;
+  };
+  systemd.user.services.eww = {
+    Unit.Description = "Eww desktop widgets";
+    Service.ExecStart = "eww open-many statusbar home";
+    Install.WantedBy = ["graphical-session.target"];
   };
   
   programs.rofi= {

@@ -1,0 +1,85 @@
+$col-bg: #000;
+$col-secondary: #59371e;
+$col-primary: #ca9b69;
+$col-accent: #d11c23;
+$col-text: #fbe6b7;
+
+.home {
+    background: transparent;
+    font-family: "Atkinson Hyperlegible";
+    color: $col-text;
+    & .day {
+	font-size: 6em;
+	margin-bottom: -0.5em;
+    }
+    & .time {
+	font-size: 15em;
+	font-weight: bold;
+    }
+    & .info {
+	font-size: 2em;
+	margin-bottom: 2rem;
+    }
+    & .info .ip {
+	font-size: 1rem;
+    }
+    & .info .network :nth-child(1) {
+	margin-right: 0.5em;
+    }
+}
+
+.statusbar {
+    background: $col-bg;
+    color: $col-text;
+    font-family: "Atkinson Hyperlegible", "Symbols Nerd Font";
+    font-size: 1.2em;
+    & .time {
+	font-weight: bold;
+    }
+    & .date {
+	color: $col-primary;
+    }
+}
+.bar {
+    padding: 0 1em;
+}
+.ws > * > * {
+    padding: 0em 0.4em;
+    transition: background 1s;
+    min-width: 1em;
+    color: $col-primary;
+}
+.ws-current {
+    font-weight: bold;
+    color: $col-text;
+    background: $col-secondary;
+}
+.ws-urgent{
+    animation: warn 1s infinite;
+}
+@keyframes warn {
+    from { background: $col-text; }
+    to { background: $col-accent; }
+}
+.ws-hidden{}
+.ws-layout{
+    font-size: 0.9em;
+}
+
+.sysinfo {
+    font-size: 0.9em;
+}
+
+.battery trough {
+    min-height: 0.3em;
+    min-width: 5em;
+    background: $col-secondary;
+    border: 0;
+}
+.battery progress {
+    min-height: 0.3em;
+    min-width: 1.5em;
+    background: $col-primary;
+    border: 0;
+}
+
