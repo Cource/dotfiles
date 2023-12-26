@@ -90,48 +90,7 @@
   
   programs.rofi= {
     enable = true;
-    font = "Atkinson Hyperlegible 14";
-    theme = with colors;
-      let
-        inherit (config.lib.formats.rasi) mkLiteral;
-        darkGreen   = mkLiteral BG2;
-        green       = mkLiteral BG1;
-        lightGreen  = mkLiteral FG2;
-        white       = mkLiteral FG1;
-        transparent = mkLiteral "#00000000";
-      in {
-        "*" = {
-          background-color = transparent;
-          text-color = white;
-          placeholder-color = lightGreen;
-          width = 612;
-        };
-        "inputbar, element selected" = {
-          background-color = green;
-        };
-        prompt = {
-          enabled = false;
-        };
-        inputbar = {
-          children = map mkLiteral [ "entry" ];
-          margin = mkLiteral "0em 0em 0.8em 0em";
-          padding = mkLiteral "0.5em 0.8em";
-          border-radius = 10;
-        };
-        entry = {
-          "placeholder" = "Search";
-        };
-        listview = {
-          dynamic = true;
-          lines = 10;
-          spacing = 0;
-          border-radius = 10;
-        };
-        element = {
-          padding = mkLiteral "0.3em 0.5em";
-          background-color = darkGreen;
-        };
-      };
+    theme = ./rofi.rasi;
   };
 
   programs.alacritty = {
