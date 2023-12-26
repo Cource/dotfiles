@@ -1,19 +1,12 @@
 {config, pkgs, ...}:
 
-let
-  colors = {
-    BG1 = "#1E5954";
-    BG2 = "#0B2422";
-    FG1 = "#E9FFFA";
-    FG2 = "#51A59D";
-  };
-in
 {
   home = {
     packages = with pkgs;
       [ (nerdfonts.override { fonts=["NerdFontsSymbolsOnly"]; })
         xmonad-log
         brightnessctl
+        flameshot
         vesktop
         helvum
         logseq
@@ -90,10 +83,6 @@ in
     client.enable = false;
   };
 
-  # services.polybar = import ./polybar.nix pkgs colors;
-  # systemd.user.services.polybar = {
-  #   Install.WantedBy = [ "graphical-session.target" ];
-  # };
   programs.eww = {
     enable = true;
     configDir = ./eww-config;
