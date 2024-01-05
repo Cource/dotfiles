@@ -63,8 +63,12 @@
       mood-line
       ligature
       vertico
+      corfu
+      embark
+      orderless
       expand-region
       magit
+      visual-fill-column
       # Language packages
       nix-mode
       elm-mode
@@ -73,14 +77,10 @@
       haml-mode
       rust-mode
       yuck-mode
+      sly
       org
-      visual-fill-column
     ];
     extraConfig = builtins.readFile ./emacs.el;
-  };
-  services.emacs = {
-    enable = false;
-    client.enable = false;
   };
 
   programs.eww = {

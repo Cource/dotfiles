@@ -29,10 +29,10 @@
 		    :height 120)
 (set-face-attribute 'fixed-pitch nil
 		    :font "FiraCode"
-		    :height 120)
+		    :height 110)
 (set-face-attribute 'variable-pitch nil
 		    :font "Atkinson Hyperlegible"
-		    :height 150)
+		    :height 130)
 
 (setq inhibit-startup-screen t) ; Disable startup screen
 (setq-default cursor-type 'bar) ; Set cursor to a bar: |
@@ -110,11 +110,12 @@
 (leaf vertico
   :doc "Vertical minibuffer completion"
   :ensure t
-  :init (vertico-mode)
-  :config
-  (leaf savehist
-    :doc "Persist minibuffer history over restarts"
-    :init (savehist-mode)))
+  :config (savehist-mode)
+  :init (vertico-mode))
+
+(leaf corfu
+  :doc "popup completion-at-point thingy"
+  :init (global-corfu-mode))
 
 (leaf expand-region
   :ensure t
@@ -166,15 +167,13 @@
   (defun config/org-init ()
      (variable-pitch-mode 1)    ; Normal font mode
 
-     (dolist (face '((org-level-1 . 2.3)    ; To increase font size of the headings based on
-                     (org-level-2 . 1.9)    ; heading level
-                     (org-level-3 . 1.5)
-                     (org-level-4 . 1.3)
-                     (org-level-5 . 1.1)
+     (dolist (face '((org-level-1 . 2.488)    ; To increase font size of the headings based on
+                     (org-level-2 . 2.074)    ; heading level
+                     (org-level-3 . 1.728)
+                     (org-level-4 . 1.44)
+                     (org-level-5 . 1.2)
                      (org-level-6 . 1.1)
-                     (org-level-7 . 1.1)
-                     (org-level-8 . 1.1)
-		     (org-document-title . 2.3)))
+		     (org-document-title . 2.986)))
        (set-face-attribute (car face) nil
 			   :font   "Atkinson HyperLegible"
 			   :weight 'bold
