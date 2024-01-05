@@ -22,11 +22,11 @@ configuration {
 /*****----- Global Properties -----*****/
 
 * {
-    background:     #000;
-    background-alt: #323020;
-    foreground:     #fbe6b7;
-    selected:       #59371e;
-    active:         #ca9b69;
+    background:     #0f0f0f;
+    background-alt: #003c44;
+    foreground:     #f1f4f4;
+    selected:       #003c44;
+    active:         #74a6bd;
     urgent:         #d11c23;
     font: "Atkinson Hyperlegible 14";
     border-colour:               var(selected);
