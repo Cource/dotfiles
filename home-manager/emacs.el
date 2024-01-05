@@ -194,5 +194,6 @@
      (auto-fill-mode    1)          ; Wrap text after 78 characters
      (set-fill-column  78)
      (display-line-numbers-mode 0)
+     (display-fill-column-indicator-mode -1)
      (org-indent-mode   1)))
 
