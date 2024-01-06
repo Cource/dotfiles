@@ -16,7 +16,6 @@
   (leaf leaf-keywords
     :ensure t
     :config
-    ;; initialize leaf-keywords.el
     (leaf-keywords-init)))
 ;; </leaf-install-code>
 
@@ -32,18 +31,18 @@
 		    :height 110)
 (set-face-attribute 'variable-pitch nil
 		    :font "Atkinson Hyperlegible"
-		    :height 130)
+		    :height 140)
 
-(setq inhibit-startup-screen t) ; Disable startup screen
-(setq-default cursor-type 'bar) ; Set cursor to a bar: |
-(set-fringe-mode 0)             ; disable padding at the sides of the frame
-(scroll-bar-mode 0)             ; disable scrollbars
-(tooltip-mode    0)             ; disable tooltips
-(menu-bar-mode   0)             ; disable menubar
-(tool-bar-mode   0)             ; disable toolbar
-(line-number-mode   0)          ; disable line number in mode line
-(column-number-mode 1)          ; enabled column number in mode line
-(global-display-line-numbers-mode t)           ; enable line numbers
+(setq inhibit-startup-screen    t)  ; Disable startup screen
+(setq-default cursor-type    'bar)  ; Set cursor to a bar: |
+(set-fringe-mode     0)  ; disable padding at the sides of the frame
+(scroll-bar-mode     0)  ; disable scrollbars
+(tooltip-mode        0)  ; disable tooltips
+(menu-bar-mode       0)  ; disable menubar
+(tool-bar-mode       0)  ; disable toolbar
+(line-number-mode    0)  ; disable line number in mode line
+(column-number-mode  1)  ; enabled column number in mode line
+(global-display-line-numbers-mode          t) ; enable line numbers
 (global-display-fill-column-indicator-mode t) ; enable standard line width indicator
 (setq visible-bell 1)
 
@@ -118,13 +117,13 @@
   :init (global-corfu-mode))
 
 (leaf expand-region
+  :doc "intelligent selection at point"
   :ensure t
   :config (global-set-key (kbd "C-=") 'er/expand-region))
 
 (leaf magit
+  :doc "Git client for emacs"
   :ensure t)
-
-(leaf visual-fill-column)
 
 (setq treesit-language-source-alist
    '((bash "https://github.com/tree-sitter/tree-sitter-bash")
@@ -148,52 +147,43 @@
 ;; Language specific
 ;;--------------------------------------------------------------------|
 
-(leaf nix-mode
-  :ensure t)
+(leaf nix-mode)
 
 (leaf elm-mode)
 
 (leaf haskell-mode)
 
-(leaf sass-mode
-  :config (leaf haml-mode :ensure t))
+(leaf sass-mode)
+(leaf haml-mode :after (sass-mode))
 
+(leaf visual-fill-column)
 (leaf org
-  :setq ((org-ellipsis                   . " ▾")
-	 (visual-fill-column-width       .  100)
-	 (visual-fill-column-center-text .    t))
-  :hook (org-mode-hook . config/org-init)
+  :doc "A markdown like documentation format"
+  :require visual-fill-column
+  :setq (org-ellipsis . " ▾")
+  :custom-face
+  ;; Heading size hierarchy
+  (org-level-1 . '((t (:height 1.728 :weight bold))))
+  (org-level-2 . '((t (:height 1.44  :weight bold))))
+  (org-level-3 . '((t (:height 1.2   :weight bold))))
+  (org-level-4 . '((t (:height 1.1   :weight bold))))
+  (org-document-title . '((t (:height 1.728 :weight bold))))
+  ;; Some alignment fixes by using a fixed pitch font where needed
+  (org-code     . '((t (:inherit (shadow fixed-pitch)))))
+  (org-table    . '((t (:inherit (shadow fixed-pitch)))))
+  (org-verbatim . '((t (:inherit (shadow fixed-pitch)))))
+  (org-special-keyword . '((t (:inherit (font-lock-comment-face fixed-pitch)))))
+  (org-meta-line       . '((t (:inherit (font-lock-comment-face fixed-pitch)))))
+  (org-checkbox . '((t (:inherit fixed-pitch))))
+  (org-block    . '((t (:inherit fixed-pitch))))
+  :hook (org-mode-hook . my-org-startup)
   :config
-  (defun config/org-init ()
-     (variable-pitch-mode 1)    ; Normal font mode
-
-     (dolist (face '((org-level-1 . 2.488)    ; To increase font size of the headings based on
-                     (org-level-2 . 2.074)    ; heading level
-                     (org-level-3 . 1.728)
-                     (org-level-4 . 1.44)
-                     (org-level-5 . 1.2)
-                     (org-level-6 . 1.1)
-		     (org-document-title . 2.986)))
-       (set-face-attribute (car face) nil
-			   :font   "Atkinson HyperLegible"
-			   :weight 'bold
-			   :height (cdr face)))
-
-     ;; Setting special text blocks' font face as fixed-pitch for better alignment
-     (dolist (face '((org-code            . (shadow fixed-pitch))
-		     (org-table           . (shadow fixed-pitch))
-		     (org-verbatim        . (shadow fixed-pitch))
-		     (org-special-keyword . (font-lock-comment-face fixed-pitch))
-		     (org-meta-line       . (font-lock-comment-face fixed-pitch))
-		     (org-checkbox        . fixed-pitch)
-		     (org-block           . fixed-pitch)))
-       (set-face-attribute (car face) nil
-			   :inherit (cdr face)))
-
-     (visual-fill-column-mode   1)  ; To center the window
-     (auto-fill-mode    1)          ; Wrap text after 78 characters
-     (set-fill-column  78)
-     (display-line-numbers-mode 0)
-     (display-fill-column-indicator-mode -1)
-     (org-indent-mode   1)))
-
+  (defun my-org-startup ()
+    (variable-pitch-mode)
+    (visual-fill-column-mode)
+    (org-indent-mode)
+    (set-fill-column  78)
+    (setq visual-fill-column-center-text    t)
+    (setq truncate-lines nil)
+    (display-line-numbers-mode 0)
+    (display-fill-column-indicator-mode -1)))
