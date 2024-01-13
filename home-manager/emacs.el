@@ -22,35 +22,30 @@
 
 ;; Visual Enhancements
 ;;--------------------------------------------------------------------|
-(set-face-attribute 'default nil
-		    :font "FiraCode"
-		    :weight 'medium
-		    :height 120)
-(set-face-attribute 'fixed-pitch nil
-		    :font "FiraCode"
-		    :height 110)
-(set-face-attribute 'variable-pitch nil
-		    :font "Atkinson Hyperlegible"
-		    :height 140)
-
-(setq inhibit-startup-screen    t)  ; Disable startup screen
-(setq-default cursor-type    'bar)  ; Set cursor to a bar: |
-(set-fringe-mode     0)  ; disable padding at the sides of the frame
-(scroll-bar-mode     0)  ; disable scrollbars
-(tooltip-mode        0)  ; disable tooltips
-(menu-bar-mode       0)  ; disable menubar
-(tool-bar-mode       0)  ; disable toolbar
-(line-number-mode    0)  ; disable line number in mode line
-(column-number-mode  1)  ; enabled column number in mode line
-(global-display-line-numbers-mode          t) ; enable line numbers
-(global-display-fill-column-indicator-mode t) ; enable standard line width indicator
-(setq visible-bell 1)
-
-(leaf gruvbox-theme
-  :doc "The gruvbox theme used across emacs"
-  :ensure t
+(leaf emacs
+  :custom-face
+  (default     . `((t (:font "JetBrains Mono" :weight medium :height 120))))
+  (fixed-pitch . `((t (:font "JetBrains Mono" :weight medium :height 120))))
+  (variable-pitch . `((t (:font "Atkinson Hyperlegible" :height 140))))
+  :setq-default
+  (cursor-type . 'bar)
+  :setq
+  (ring-bell-function . 'ignore)
+  (inhibit-startup-screen . t)
+  :hook (before-save . whitespace-cleanup)
   :config
-  (load-theme 'gruvbox-dark-hard t))
+  (scroll-bar-mode 0)
+  (tooltip-mode  0)
+  (menu-bar-mode 0)
+  (tool-bar-mode 0)
+  (delete-selection-mode)
+  (electric-pair-mode)
+  (global-display-fill-column-indicator-mode t))
+
+(leaf wildcharm-theme
+  :doc "A high contrast dark theme"
+  :config
+  (load-theme `wildcharm))
 
 (leaf smooth-scrolling
   :doc "Less jarring scrolling in windows"
@@ -62,10 +57,7 @@
   :ensure t
   :config
   (mood-line-mode)
-  (setq mood-line-glyph-alist mood-line-glyphs-fira-code)
-  (set-face-attribute 'mode-line nil ; EXPLICIT! IMPURE!! PREPOSTEROUS!!!
-		      :box '(:line-width 12 :color "#3c3836")
-		      :background "#3c3836")) ; TODO: figure out a way to not define colors explicitly
+  (setq mood-line-glyph-alist mood-line-glyphs-fira-code))
 
 (leaf ligature
   :doc "Enable font ligatures"
@@ -109,12 +101,22 @@
 (leaf vertico
   :doc "Vertical minibuffer completion"
   :ensure t
-  :config (savehist-mode)
-  :init (vertico-mode))
+  :config
+  (savehist-mode)
+  (vertico-mode))
+
+(leaf orderless
+  :doc "Fuzzy(and more) completions"
+  :ensure t
+  :setq
+  (completion-styles . '(orderless basic))
+  (completion-category-defaults  . nil)
+  (completion-category-overr . '((file (styles basic partial-completion)))))
 
 (leaf corfu
-  :doc "popup completion-at-point thingy"
-  :init (global-corfu-mode))
+  :doc "popup completion-at-point"
+  :setq (corfu-auto . t)
+  :config (global-corfu-mode))
 
 (leaf expand-region
   :doc "intelligent selection at point"
@@ -168,7 +170,7 @@
   (org-level-3 . '((t (:height 1.2   :weight bold))))
   (org-level-4 . '((t (:height 1.1   :weight bold))))
   (org-document-title . '((t (:height 1.728 :weight bold))))
-  ;; Some alignment fixes by using a fixed pitch font where needed
+  ;; Some alignment fixes by using a monospace font where needed
   (org-code     . '((t (:inherit (shadow fixed-pitch)))))
   (org-table    . '((t (:inherit (shadow fixed-pitch)))))
   (org-verbatim . '((t (:inherit (shadow fixed-pitch)))))
@@ -180,10 +182,9 @@
   :config
   (defun my-org-startup ()
     (variable-pitch-mode)
-    (visual-fill-column-mode)
     (org-indent-mode)
+    (visual-fill-column-mode)
     (set-fill-column  78)
     (setq visual-fill-column-center-text    t)
-    (setq truncate-lines nil)
-    (display-line-numbers-mode 0)
+    (visual-line-mode)
     (display-fill-column-indicator-mode -1)))

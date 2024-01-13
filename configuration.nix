@@ -102,6 +102,7 @@
     pkgs.fira-code
     pkgs.atkinson-hyperlegible
     pkgs.noto-fonts
+    pkgs.jetbrains-mono
   ];
 
   # List packages installed in system profile. To search, run:
