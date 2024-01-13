@@ -58,7 +58,7 @@
     extraPackages = epkgs: with epkgs; [
       leaf
 	    leaf-keywords
-      gruvbox-theme
+      wildcharm-theme
       smooth-scrolling
       mood-line
       ligature
