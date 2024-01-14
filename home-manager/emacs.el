@@ -24,8 +24,8 @@
 ;;--------------------------------------------------------------------|
 (leaf emacs
   :custom-face
-  (default     . `((t (:font "JetBrains Mono" :weight medium :height 120))))
-  (fixed-pitch . `((t (:font "JetBrains Mono" :weight medium :height 120))))
+  (default     . `((t (:font "JetBrains Mono" :height 120))))
+  (fixed-pitch . `((t (:font "JetBrains Mono" :height 120))))
   (variable-pitch . `((t (:font "Atkinson Hyperlegible" :height 140))))
   :setq-default
   (cursor-type . 'bar)
@@ -44,6 +44,7 @@
 
 (leaf wildcharm-theme
   :doc "A high contrast dark theme"
+  :ensure t
   :config
   (load-theme `wildcharm))
 
@@ -113,8 +114,20 @@
   (completion-category-defaults  . nil)
   (completion-category-overr . '((file (styles basic partial-completion)))))
 
+(leaf embark
+  :doc "Common at-point actions"
+  :ensure t
+  :setq (prefix-help-command . #'embark-prefix-help-command)
+  :bind ("C-." . embark-act))
+
+(leaf marginalia
+  :ensure t
+  :config
+  (marginalia-mode))
+
 (leaf corfu
   :doc "popup completion-at-point"
+  :ensure t
   :setq (corfu-auto . t)
   :config (global-corfu-mode))
 
