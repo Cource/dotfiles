@@ -55,31 +55,7 @@
   programs.emacs = {
     package = pkgs.emacs29;
     enable = true;
-    extraPackages = epkgs: with epkgs; [
-      leaf
-	    leaf-keywords
-      wildcharm-theme
-      smooth-scrolling
-      mood-line
-      ligature
-      vertico
-      corfu
-      embark
-      orderless
-      expand-region
-      magit
-      visual-fill-column
-      # Language packages
-      nix-mode
-      elm-mode
-      haskell-mode
-      sass-mode
-      haml-mode
-      rust-mode
-      yuck-mode
-      sly
-      org
-    ];
+    extraPackages = epkgs: [epkgs.leaf];
     extraConfig = builtins.readFile ./emacs.el;
   };
 

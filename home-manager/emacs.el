@@ -171,30 +171,20 @@
 (leaf sass-mode)
 (leaf haml-mode :after (sass-mode))
 
-(leaf visual-fill-column)
+(leaf visual-fill-column :ensure t)
 (leaf org
   :doc "A markdown like documentation format"
-  :require visual-fill-column
   :setq (org-ellipsis . " ▾")
   :custom-face
   ;; Heading size hierarchy
-  (org-level-1 . '((t (:height 1.728 :weight bold))))
-  (org-level-2 . '((t (:height 1.44  :weight bold))))
-  (org-level-3 . '((t (:height 1.2   :weight bold))))
-  (org-level-4 . '((t (:height 1.1   :weight bold))))
-  (org-document-title . '((t (:height 1.728 :weight bold))))
-  ;; Some alignment fixes by using a monospace font where needed
-  (org-code     . '((t (:inherit (shadow fixed-pitch)))))
-  (org-table    . '((t (:inherit (shadow fixed-pitch)))))
-  (org-verbatim . '((t (:inherit (shadow fixed-pitch)))))
-  (org-special-keyword . '((t (:inherit (font-lock-comment-face fixed-pitch)))))
-  (org-meta-line       . '((t (:inherit (font-lock-comment-face fixed-pitch)))))
-  (org-checkbox . '((t (:inherit fixed-pitch))))
-  (org-block    . '((t (:inherit fixed-pitch))))
+  (org-level-1 . '((t (:height 1.728 :weight bold :inherit variable-pitch))))
+  (org-level-2 . '((t (:height 1.44  :weight bold :inherit variable-pitch))))
+  (org-level-3 . '((t (:height 1.2   :weight bold :inherit variable-pitch))))
+  (org-level-4 . '((t (:height 1.1   :weight bold :inherit variable-pitch))))
+  (org-document-title . '((t (:height 1.728 :weight bold :inherit variable-pitch))))
   :hook (org-mode-hook . my-org-startup)
   :config
   (defun my-org-startup ()
-    (variable-pitch-mode)
     (org-indent-mode)
     (visual-fill-column-mode)
     (set-fill-column  78)
