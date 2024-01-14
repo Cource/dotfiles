@@ -14,14 +14,13 @@
       ];
     stateVersion = "23.05";
   };
+
   programs.zsh = {
     enable = true;
     syntaxHighlighting.enable = true;
-    prezto = {
-      enable = true;
-      caseSensitive = false;
-      editor.keymap = "emacs";
-      prompt.theme = "walters";
+    localVariables = {
+        PROMPT="%F{15}%n%F{8}@%m%F{15}%B|%b %f";
+        RPROMPT="%F{8}%~%B%F{15}|%f%b";
     };
   };
   
@@ -74,13 +73,13 @@
     settings = {
       font = {
         normal = {
-          family = "Fira Code";
+          family = "JetBrains Mono";
           style = "Regular";
         };
         size = 8;
       };
       window = {
-        opacity = 0.9;
+        opacity = 0.93;
         padding = {
           x = 5;
           y = 5;
