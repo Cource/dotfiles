@@ -23,6 +23,9 @@
 ;; Visual Enhancements
 ;;--------------------------------------------------------------------|
 (leaf emacs
+  :if
+  (find-font (font-spec :family "Atkinson Hyperlegible"))
+  (find-font (font-spec :family "JetBrains Mono"))
   :custom-face
   (default     . `((t (:font "JetBrains Mono" :height 120))))
   (fixed-pitch . `((t (:font "JetBrains Mono" :height 120))))
@@ -33,6 +36,7 @@
   (ring-bell-function . 'ignore)
   (inhibit-startup-screen . t)
   :hook (before-save . whitespace-cleanup)
+  (initial-scratch-message . nil)
   :config
   (scroll-bar-mode 0)
   (tooltip-mode  0)
@@ -41,6 +45,36 @@
   (delete-selection-mode)
   (electric-pair-mode)
   (global-display-fill-column-indicator-mode t))
+
+(leaf custom-startup-screen
+  :doc "Show *Welcome* buffer."
+  :config
+  (unless (file-exists-p "~/.emacs.d/emacs.png")
+    (url-copy-file "https://raw.githubusercontent.com/TanbinIslam43/mydotfiles/main/.doom.d/emacs.png" "~/.emacs.d/emacs.png" t))
+  (with-current-buffer (get-buffer-create "*Welcome*")
+    (setq truncate-lines t)
+    (let* ((buffer-read-only)
+           (image-path "~/.emacs.d/emacs.png")
+           (image (create-image image-path))
+           (size (image-size image))
+           (height (cdr size))
+           (width (car size))
+           (top-margin (floor (/ (- (window-height) height) 2)))
+           (left-margin (floor (/ (- (window-width) width) 2)))
+           (prompt-title "Welcome to Emacs!"))
+      (erase-buffer)
+      (setq mode-line-format nil)
+      (goto-char (point-min))
+      (insert (make-string top-margin ?\n ))
+      (insert (make-string left-margin ?\ ))
+      (insert-image image)
+      (insert "\n\n\n")
+      (insert (make-string (floor (/ (- (window-width) (string-width prompt-title)) 2)) ?\ ))
+      (insert prompt-title))
+    (setq cursor-type nil)
+    (read-only-mode +1)
+    (switch-to-buffer (current-buffer))
+    (local-set-key (kbd "q") 'kill-this-buffer)))
 
 (leaf wildcharm-theme
   :doc "A high contrast dark theme"
