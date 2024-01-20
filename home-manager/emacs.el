@@ -35,7 +35,8 @@
   :setq
   (ring-bell-function . 'ignore)
   (inhibit-startup-screen . t)
-  :hook (before-save . whitespace-cleanup)
+  :hook
+  (before-save . whitespace-cleanup)
   (initial-scratch-message . nil)
   :config
   (scroll-bar-mode 0)
@@ -195,15 +196,6 @@
 
 ;; Language specific
 ;;--------------------------------------------------------------------|
-
-(leaf nix-mode)
-
-(leaf elm-mode)
-
-(leaf haskell-mode)
-
-(leaf sass-mode)
-(leaf haml-mode :after (sass-mode))
 
 (leaf visual-fill-column :ensure t)
 (leaf org
