@@ -37,7 +37,6 @@
   (inhibit-startup-screen . t)
   :hook
   (before-save . whitespace-cleanup)
-  (initial-scratch-message . nil)
   :config
   (scroll-bar-mode 0)
   (tooltip-mode  0)
