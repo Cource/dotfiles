@@ -22,6 +22,11 @@
 
 ;; Visual Enhancements
 ;;--------------------------------------------------------------------|
+
+(dolist (font-name '("Atkinson Hyperlegible" "JetBrains Mono"))
+  (unless (find-font (font-spec :family font-name))
+      (message "ERROR: Font %s were not found" font-name)))
+
 (leaf emacs
   :if
   (find-font (font-spec :family "Atkinson Hyperlegible"))

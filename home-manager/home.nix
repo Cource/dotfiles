@@ -8,9 +8,12 @@
         brightnessctl
         flameshot
         vesktop
+        stremio
         helvum
         logseq
         foliate
+        wine
+        mpv
       ];
     stateVersion = "23.05";
   };
@@ -19,8 +22,11 @@
     enable = true;
     syntaxHighlighting.enable = true;
     localVariables = {
-        PROMPT="%F{15}%n%F{8}@%m%F{15}%B|%b %f";
-        RPROMPT="%F{8}%~%B%F{15}|%f%b";
+      PROMPT="%F{15}%n%F{8}@%m%F{15}%B|%b %f";
+      RPROMPT="%F{8}%~%B%F{15}|%f%b";
+    };
+    shellAliases = {
+      nonet = "systemd-run --scope -p IPAddressDeny=any";
     };
   };
   
@@ -116,9 +122,6 @@
     userName = "cource";
   };
 
-  services.easyeffects = {
-    enable = true;
-  };
 
   services.syncthing.enable = true;
 }
