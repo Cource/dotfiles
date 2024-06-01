@@ -12,7 +12,9 @@
         helvum
         logseq
         foliate
-        wine
+        wineWowPackages.base
+        joshuto
+        qbittorrent
         mpv
       ];
     stateVersion = "23.05";
