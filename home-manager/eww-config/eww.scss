@@ -1,20 +1,27 @@
-$col-bg: #0f0f0f;
-$col-secondary: #003c44;
-$col-primary: #74a6bd;
-$col-accent: #4ca490;
-$col-text: #f1f4f4;
+$col-bg: #05080c;
+$col-secondary: #494542;
+$col-primary: #bdaa8c;
+$col-accent: #9a8b4d;
+$col-text: #fefdfe;
 
 .home {
     background: transparent;
-    font-family: "Atkinson Hyperlegible";
+    font-family: "JetBrains Mono";
     color: $col-text;
+    opacity: 0.4;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     & .day {
 	font-size: 6em;
 	margin-bottom: -0.5em;
     }
     & .time {
-	font-size: 15em;
+	font-size: 25em;
 	font-weight: bold;
+	& .minute {
+	    font-size: .7em;
+	    font-weight: 500;
+	    opacity: 0.7
+	}
     }
     & .info {
 	font-size: 2em;

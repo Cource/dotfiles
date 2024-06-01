@@ -50,7 +50,7 @@
 (defwidget network [?minimal]
   (box :class "network"
        :space-evenly false
-       :halign "start"
+       :halign "end"
        :visible {NETWORK.type=="loopback" ? false : true}
        :spacing 5
        (label :class "icon"
@@ -73,15 +73,14 @@
 	      :width "50%"
 	      :height "40%"
 	      :anchor "bottom left"
-	      :x "3%")
+	      :x "3%"
+	      :y "3%")
     (box :orientation "v"
-	 :halign "start"
-	 :valign "end"
 	 :space-evenly false
-	 (box :class "info"
-	      :orientation "v"
-	      :spacing 10
-	      (network))
-	 (label :class "day" :halign "start" :text {formattime(EWW_TIME, "%A")})
-	 (label :class "time" :text {formattime(EWW_TIME, "%_I:%M")})))
+	 (label :class "day" :angle 90 :halign "start" :text {formattime(EWW_TIME, "%A")})
+	 (box :halign "start"
+	      :space-evenly false
+	      :class "time"
+	      (label :class "hour" :valign "baseline" :text {formattime(EWW_TIME, "%_I")})
+	      (label :class "minute" :valign "baseline" :text {formattime(EWW_TIME, "%M")}))))
 
