@@ -17,7 +17,7 @@
         qbittorrent
         mpv
       ];
-    stateVersion = "23.05";
+    stateVersion = "24.05";
   };
 
   programs.zsh = {

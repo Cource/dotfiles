@@ -221,3 +221,6 @@
     (setq visual-fill-column-center-text    t)
     (visual-line-mode)
     (display-fill-column-indicator-mode -1)))
+
+(leaf nix-haskell-mode
+  :hook (haskell-mode-hook . nix-haskell-mode))

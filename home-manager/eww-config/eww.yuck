@@ -66,21 +66,21 @@
 	    (label :halign "start" :text {NETWORK.name})
 	    (label :class "ip" :visible {minimal==""} :halign "start" :text IP))))
 
-(defwindow home
-    :stacking "bg"
-    :window-type "desktop"
-    :geometry (geometry
-	      :width "50%"
-	      :height "40%"
-	      :anchor "bottom left"
-	      :x "3%"
-	      :y "3%")
-    (box :orientation "v"
-	 :space-evenly false
-	 (label :class "day" :angle 90 :halign "start" :text {formattime(EWW_TIME, "%A")})
-	 (box :halign "start"
-	      :space-evenly false
-	      :class "time"
-	      (label :class "hour" :valign "baseline" :text {formattime(EWW_TIME, "%_I")})
-	      (label :class "minute" :valign "baseline" :text {formattime(EWW_TIME, "%M")}))))
+;; (defwindow home
+;;     :stacking "bg"
+;;     :window-type "desktop"
+;;     :geometry (geometry
+;; 	      :width "50%"
+;; 	      :height "40%"
+;; 	      :anchor "bottom left"
+;; 	      :x "3%"
+;; 	      :y "3%")
+;;     (box :orientation "v"
+;; 	 :space-evenly false
+;; 	 (label :class "day" :angle 90 :halign "start" :text {formattime(EWW_TIME, "%A")})
+;; 	 (box :halign "start"
+;; 	      :space-evenly false
+;; 	      :class "time"
+;; 	      (label :class "hour" :valign "baseline" :text {formattime(EWW_TIME, "%_I")})
+;; 	      (label :class "minute" :valign "baseline" :text {formattime(EWW_TIME, "%M")}))))
 
