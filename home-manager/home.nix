@@ -13,7 +13,7 @@
         logseq
         foliate
         wineWowPackages.base
-        joshuto
+        joshuto trash-cli
         qbittorrent
         mpv
       ];

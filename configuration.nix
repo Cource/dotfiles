@@ -11,7 +11,6 @@
       ./nvidia.nix
     ];
 
-  nix.package = pkgs.nixUnstable;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
@@ -56,10 +55,14 @@
     upower.enable = true;
 
     dbus.enable = true;
+
+    libinput = {
+      enable = true;
+      touchpad.naturalScrolling = true;
+    };
     
     xserver = {
       enable = true;
-      layout = "us";
 
       desktopManager.session = [
         {
@@ -71,12 +74,10 @@
         }
       ];
 
-      libinput = {
-        enable = true;
-        touchpad.naturalScrolling = true;
+      xkb = {
+        layout = "us";
+        options = "caps:ctrl_modifier";
       };
-
-      xkbOptions = "caps:ctrl_modifier";
     };
     
     pipewire = {

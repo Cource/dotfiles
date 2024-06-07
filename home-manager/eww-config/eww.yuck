@@ -25,7 +25,7 @@
 	      :space-evenly false
 	      :spacing 10
 	      (label :class "time" :text {formattime(EWW_TIME, "%H:%M")})
-	      (label :class "date" :text {formattime(EWW_TIME, "%d %b, %Y")}))
+	      (label :class "date" :text {formattime(EWW_TIME, "%a | %d %b, %Y")}))
 	 (sys_info)))
 
 (defwidget sys_info []

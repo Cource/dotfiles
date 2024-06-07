@@ -21,6 +21,7 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
+            backupFileExtension = "backup";
             users.cource = import ./home-manager/home.nix;
           };
         }
