@@ -21,18 +21,14 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # networking.hostName = "nixos"; # Define your hostname.
-  # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
-  # Set your time zone.
   time.timeZone = "Asia/Kolkata";
 
-  # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   # console = {
   #   font = "Lat2-Terminus16";
@@ -40,7 +36,6 @@
   #   useXkbConfig = true; # use xkbOptions in tty.
   # };
 
-  # Enable CUPS to print documents.
   services.printing.enable = true;
 
   # Enable sound.
@@ -49,6 +44,8 @@
 
   # for dbus (was added to setup easyeffects audio)
   programs.dconf.enable = true;
+
+  security.polkit.enable = true;
   
   services = {
     gnome.gnome-keyring.enable = true;
@@ -60,23 +57,30 @@
       enable = true;
       touchpad.naturalScrolling = true;
     };
+
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+      theme = "chili";
+      settings.Theme.CursorTheme = "macOS-Monterey-White";
+    };
     
     xserver = {
       enable = true;
 
-      desktopManager.session = [
-        {
-          name = "home-manager";
-          start = ''
-                  ${pkgs.runtimeShell} $HOME/.hm-xsession &
-                  waitPID=$!
-                  '';
-        }
-      ];
+      # desktopManager.session = [
+      #   {
+      #     name = "home-manager";
+      #     start = ''
+      #             ${pkgs.runtimeShell} $HOME/.hm-xsession &
+      #             waitPID=$!
+      #             '';
+      #   }
+      # ];
 
       xkb = {
         layout = "us";
-        options = "caps:ctrl_modifier";
+      #   options = "caps:ctrl_modifier";
       };
     };
     
@@ -108,10 +112,14 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim
-    wget
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      vim
+      wget
+      sddm-chili-theme
+    ];
+    sessionVariables.NIXOS_OZONE_WL = "1";
+  };
   
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "steam"
@@ -127,6 +135,7 @@
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
     };
+    hyprland.enable = true;
   };
 
   # Some programs need SUID wrappers, can be configured further or are

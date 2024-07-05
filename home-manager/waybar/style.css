@@ -1,0 +1,69 @@
+* {
+    border: none;
+    border-radius: 0;
+    font-family: Jetbrains Mono;
+}
+button, button:hover, #mode { box-shadow: none; }
+window#waybar {
+    background: #222;
+    color: #aaa;
+    border-radius: 0 1em 1em 0;
+}
+
+window#waybar>box{
+    padding: 0.5rem 0 0;
+}
+
+#workspaces button {
+    padding: 0.5rem 0 0.5rem 0.5rem;
+    color: #aab2bf;
+    margin: 0 0.5rem 0 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+#workspaces button:hover {
+    background: #333;
+    color: #fff;
+}
+#workspaces button.visible {
+    background: #333;
+    font-weight: bold;
+    color: #fff
+}
+#taskbar {
+    margin: 1rem 0 0.8rem 0;
+}
+#taskbar > * {
+    padding: 0.1rem;
+    opacity: 0.3
+}
+#taskbar > :hover {
+   background: none;
+}
+#window label{
+    color: #555;
+    background: none;
+    font-size: 1rem;
+    margin-left: 1.1rem;
+}
+#tray label {
+    font-size: 1rem;
+}
+.modules-right > * > * {
+    margin: 0.3rem 0.5rem;
+    font-size: 1.4rem;
+    background: #333;
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+}
+#battery {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 0;
+}
+#temperature {
+    font-size: 0.9rem;
+    color: #555;
+    background: none;
+    padding: 0;
+    margin: 0.5rem 0;
+}

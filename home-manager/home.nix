@@ -7,7 +7,9 @@
         xmonad-log
         brightnessctl
         flameshot
-        vesktop
+        libnotify
+        grim slurp
+        armcord
         stremio
         helvum
         logseq
@@ -31,21 +33,27 @@
       nonet = "systemd-run --scope -p IPAddressDeny=any";
     };
   };
-  
-  xsession = {
+
+  wayland.windowManager.hyprland = {
     enable = true;
-    scriptPath = ".hm-xsession";
-    windowManager.xmonad = {
-      enable = true;
-      enableContribAndExtras = true;
-      extraPackages = hp: [
-        hp.dbus
-        hp.monad-logger
-        hp.xmonad-contrib
-      ];
-      config = ./xmonad.hs;
-    };
+    xwayland.enable = true;
+    extraConfig = builtins.readFile ./hyprland.conf;
   };
+
+  # xsession = {
+  #   enable = true;
+  #   scriptPath = ".hm-xsession";
+  #   windowManager.xmonad = {
+  #     enable = true;
+  #     enableContribAndExtras = true;
+  #     extraPackages = hp: [
+  #       hp.dbus
+  #       hp.monad-logger
+  #       hp.xmonad-contrib
+  #     ];
+  #     config = ./xmonad.hs;
+  #   };
+  # };
 
   services.picom = {
     enable = true;
@@ -66,14 +74,44 @@
     extraConfig = builtins.readFile ./emacs.el;
   };
 
-  programs.eww = {
+  # programs.eww = {
+  #   enable = true;
+  #   configDir = ./eww-config;
+  # };
+
+  programs.waybar = {
     enable = true;
-    configDir = ./eww-config;
+    settings = import ./waybar/waybar-config.nix;
+    style = builtins.readFile ./waybar/style.css;
   };
   
-  programs.rofi= {
+  programs.rofi = {
     enable = true;
+    package = pkgs.rofi-wayland;
     theme = ./rofi.rasi;
+  };
+
+  services.mako = {
+    enable = true;
+    width = 350;
+    height = 110;
+    anchor = "bottom-right";
+    layer = "overlay";
+    font = "Jetbrains Mono 11.2";
+    defaultTimeout = 5000;
+    backgroundColor = "#333333";
+    textColor = "#aaaaaa";
+    borderColor = "#222222";
+    borderSize = 8;
+    borderRadius = 15;
+    padding = "13,20";
+    margin = "10,-15,0,0";
+    extraConfig = ''
+      outer-margin=20,0
+      [urgency=high]
+      text-color=#ffffff
+      default-timeout=0
+    '';
   };
 
   programs.alacritty = {
@@ -84,7 +122,7 @@
           family = "JetBrains Mono";
           style = "Regular";
         };
-        size = 8;
+        size = 12;
       };
       window = {
         opacity = 0.93;

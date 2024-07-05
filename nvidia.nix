@@ -11,7 +11,9 @@ let
 in
 {
   nixpkgs.config.allowUnfree = true;
-  environment.systemPackages = [ nvidia-offload ];
+  environment.systemPackages = [ nvidia-offload
+                                 pkgs.nvidia-vaapi-driver
+                               ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia.prime = {
