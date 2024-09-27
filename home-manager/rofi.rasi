@@ -102,7 +102,7 @@ mainbox {
     border-radius:               0px 0px 0px 0px;
     border-color:                @selected;
     background-color:            transparent;
-    children:                    [ "inputbar", "listview" ];
+    children:                    [ "inputbar", "message", "listview" ];
 }
 
 /*****----- Inputbar -----*****/
@@ -136,8 +136,14 @@ entry {
     background-color:            inherit;
     text-color:                  inherit;
     cursor:                      text;
-    placeholder:                 "Search...";
-    placeholder-color:           inherit;
+    placeholder:                 "Type...";
+    placeholder-color:           @selected;
+}
+
+message {
+    padding:                     0 8px;
+    text-color:                  @selected;
+    background-color:            @background;
 }
 
 /*****----- Listview -----*****/
