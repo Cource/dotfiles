@@ -36,7 +36,7 @@
   #   useXkbConfig = true; # use xkbOptions in tty.
   # };
 
-  services.printing.enable = true;
+  # services.printing.enable = true;
 
   # Enable sound.
   # sound.enable = true;
@@ -46,7 +46,20 @@
   programs.dconf.enable = true;
 
   security.polkit.enable = true;
-  
+  systemd.user.services.polkit-gnome-authentication-agent-1 = {
+    description = "polkit-gnome-authentication-agent-1";
+    wantedBy = [ "graphical-session.target" ];
+    wants = [ "graphical-session.target" ];
+    after = [ "graphical-session.target" ];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+      Restart = "on-failure";
+      RestartSec = 1;
+      TimeoutStopSec = 10;
+    };
+  };
+
   services = {
     gnome.gnome-keyring.enable = true;
     upower.enable = true;
@@ -58,15 +71,16 @@
       touchpad.naturalScrolling = true;
     };
 
-    displayManager.sddm = {
       enable = true;
-      wayland.enable = true;
-      theme = "chili";
-      settings.Theme.CursorTheme = "macOS-Monterey-White";
     };
-    
+
     xserver = {
       enable = true;
+
+      displayManager.gdm = {
+        enable = true;
+        wayland = true;
+      };
 
       # desktopManager.session = [
       #   {
@@ -96,6 +110,7 @@
   services.blueman.enable = true;
 
   systemd.services.upower.enable = true;
+  services.fprintd.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.cource = {
@@ -116,17 +131,16 @@
     systemPackages = with pkgs; [
       vim
       wget
-      sddm-chili-theme
     ];
     sessionVariables.NIXOS_OZONE_WL = "1";
   };
-  
+
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "steam"
     "steam-original"
     "steam-run"
   ];
-  
+
   programs = {
     zsh.enable = true;
     adb.enable = true;
@@ -138,6 +152,7 @@
     hyprland.enable = true;
   };
 
+  xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -172,4 +187,3 @@
   system.stateVersion = "22.11"; # Did you read the comment?
 
 }
-
