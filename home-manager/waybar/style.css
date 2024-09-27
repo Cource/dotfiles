@@ -37,7 +37,7 @@ window#waybar>box{
     opacity: 0.3
 }
 #taskbar > :hover {
-   background: none;
+    background: none;
 }
 #window label{
     color: #555;
@@ -48,7 +48,13 @@ window#waybar>box{
 #tray label {
     font-size: 1rem;
 }
-.modules-right > * > * {
+#tray>:first-child image {
+    margin-top: 0;
+}
+#tray image {
+    margin-top: 0.5rem;
+}
+.modules-right .module {
     margin: 0.3rem 0.5rem;
     font-size: 1.4rem;
     background: #333;
@@ -59,6 +65,26 @@ window#waybar>box{
     padding-top: 1rem;
     padding-bottom: 1rem;
     margin-bottom: 0;
+}
+#battery.good {
+    color: #aaa;
+}
+#battery.warning, #battery {
+    color: #ec9;
+}
+#battery.critical {
+    color: #f56;
+}
+#battery.charging {
+    color: #4a4;
+/*     animation-name: charge; */
+/*     animation-duration: 1s; */
+/*     animation-timing-function: circular; */
+/*     animation-iteration-count: infinite; */
+}
+@keyframes charge {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 #temperature {
     font-size: 0.9rem;

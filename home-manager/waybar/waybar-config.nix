@@ -71,12 +71,12 @@
       "battery"= {
         "rotate"= 270;
         "states"= {
-          "good"= 95;
+          "good"= 90;
           "warning"= 30;
           "critical"= 15;
         };
         "format"= "{icon}";
-        "format-charging"= "<b>{icon}</b>";
+        "format-charging"= "<div class='charging'>{icon}</div>";
         "format-full"= "<span color='#82A55F'><b>{icon}</b></span>";
         "format-icons"= [
           "󰁻"
