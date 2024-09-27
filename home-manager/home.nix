@@ -4,20 +4,25 @@
   home = {
     packages = with pkgs;
       [ (nerdfonts.override { fonts=["NerdFontsSymbolsOnly"]; })
-        xmonad-log
+        direnv
         brightnessctl
-        flameshot
+        swaybg
         libnotify
         grim slurp
-        armcord
+        vesktop
         stremio
         helvum
-        logseq
         foliate
         wineWowPackages.base
+        bottles gamescope
         joshuto trash-cli
         qbittorrent
         mpv
+        moonlight-qt
+        zen
+        libreoffice-fresh
+        gimp
+        emacs29-pgtk
       ];
     stateVersion = "24.05";
   };
@@ -32,6 +37,7 @@
     shellAliases = {
       nonet = "systemd-run --scope -p IPAddressDeny=any";
     };
+    initExtra = "eval \"$(direnv hook zsh)\"";
   };
 
   wayland.windowManager.hyprland = {
@@ -61,18 +67,13 @@
     backend = "glx";
     fade = true;
     fadeDelta = 2;
-    settings = { 
+    settings = {
       corner-radius = 10;
       inactive-opacity-override = true;
     };
   };
 
-  programs.emacs = {
-    package = pkgs.emacs29;
-    enable = true;
-    extraPackages = epkgs: [epkgs.leaf];
-    extraConfig = builtins.readFile ./emacs.el;
-  };
+  home.file.".emacs".source = ./emacs.el;
 
   # programs.eww = {
   #   enable = true;
@@ -84,7 +85,7 @@
     settings = import ./waybar/waybar-config.nix;
     style = builtins.readFile ./waybar/style.css;
   };
-  
+
   programs.rofi = {
     enable = true;
     package = pkgs.rofi-wayland;
@@ -133,7 +134,7 @@
       };
     };
   };
-  
+
   programs.firefox = {
     enable = true;
     profiles.cource = {
@@ -142,13 +143,6 @@
         ublock-origin
         sidebery
       ];
-      search = {
-        default = "DuckDuckGo";
-        order = [
-          "DuckDuckGo"
-          "Google"
-        ];
-      };
       userChrome = ''
         #TabsToolbar { visibility: collapse !important; }
         #sidebar-header { display: none !important; }
@@ -160,9 +154,9 @@
     enable = true;
     userEmail = "jeffjacobjoy@gmail.com";
     userName = "cource";
+    ignores = [ "**~" "**#" ];
   };
 
-
-  services.syncthing.enable = true;
+  services.lorri.enable = true;
+  programs.jujutsu.enable = true;
 }
-
