@@ -12,13 +12,12 @@
 	 `xmonad-log`)
 
 (defwindow statusbar
-    :windowtype "dock"
-    :reserve (struts :side "top" :distance "4.1%")
+    :exclusive true
+    :monitor 0
     :geometry (geometry
 	       :width "99.2%"
-	       :height "3.5%"
-	       :x "8px"
-	       :y "8px")
+	       :height "3.4%"
+	       :x "8px")
     (box :class "bar"
 	 (literal :vexpand true :class "ws" :content XMONADLOG)
 	 (box :halign "center"
