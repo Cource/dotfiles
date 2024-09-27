@@ -8,14 +8,20 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur.url = "github:nix-community/nur";
+    zen-browser.url = "github:MarceColl/zen-browser-flake";
   };
 
   outputs = inputs@{ nixpkgs, home-manager, ... }: {
-    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
       modules = [
         ./configuration.nix
-        ({pkgs, ...}: { nixpkgs.overlays = [ inputs.nur.overlay ]; })
+        ({pkgs, ...}: {
+          nixpkgs.overlays =
+            [ inputs.nur.overlay
+              (final: prev: {
+                zen = inputs.zen-browser.packages."${system}".default; })];
+        })
         home-manager.nixosModules.home-manager
         {
           home-manager = {

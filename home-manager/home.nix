@@ -4,13 +4,13 @@
   home = {
     packages = with pkgs;
       [ (nerdfonts.override { fonts=["NerdFontsSymbolsOnly"]; })
-        direnv
         brightnessctl
         swaybg
         libnotify
         grim slurp
         vesktop
         stremio
+        wofi
         helvum
         foliate
         wineWowPackages.base
@@ -23,21 +23,44 @@
         libreoffice-fresh
         gimp
         emacs29-pgtk
+        mg
       ];
     stateVersion = "24.05";
   };
 
-  programs.zsh = {
+  # programs.zsh = {
+  #   enable = true;
+  #   syntaxHighlighting.enable = true;
+  #   localVariables = {
+  #     PROMPT="%F{15}%n%F{8}@%m%F{15}%B|%b %f";
+  #     RPROMPT="%F{8}%~%B%F{15}|%f%b";
+  #     EDITOR="mg";
+  #   };
+  #   shellAliases = {
+  #     nonet = "systemd-run --scope -p IPAddressDeny=any";
+  #   };
+  #   initExtra = ''eval "$(direnv hook zsh)"'';
+  # };
+
+  programs.bash = {
     enable = true;
-    syntaxHighlighting.enable = true;
-    localVariables = {
-      PROMPT="%F{15}%n%F{8}@%m%F{15}%B|%b %f";
-      RPROMPT="%F{8}%~%B%F{15}|%f%b";
+    sessionVariables = {
+      EDITOR = "emacsclient";
     };
     shellAliases = {
       nonet = "systemd-run --scope -p IPAddressDeny=any";
     };
-    initExtra = "eval \"$(direnv hook zsh)\"";
+    bashrcExtra =
+      ''rightprompt()
+        {
+          printf "%*s" $COLUMNS "\[\e[90m\]\w\[\e[97m\]|\[\e[0m\]"
+        }
+        PS1="\[$(tput sc; rightprompt; tput rc)\]\u\[\e[90m\]@\h\$\[\e[97m\]|\[\e[0m\] "'';
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
   };
 
   wayland.windowManager.hyprland = {
@@ -61,24 +84,29 @@
   #   };
   # };
 
-  services.picom = {
-    enable = true;
-    vSync = true;
-    backend = "glx";
-    fade = true;
-    fadeDelta = 2;
-    settings = {
-      corner-radius = 10;
-      inactive-opacity-override = true;
-    };
-  };
+  # services.picom = {
+  #   enable = true;
+  #   vSync = true;
+  #   fade = true;
+  #   fadeDelta = 2;
+  #   settings = {
+  #     corner-radius = 10;
+  #     inactive-opacity-override = true;
+  #   };
+  # };
 
+  services.emacs = {
+    enable = true;
+    package = pkgs.emacs29-pgtk;
+    startWithUserSession = "graphical";
+    client.enable = true;
+  };
   home.file.".emacs".source = ./emacs.el;
 
-  # programs.eww = {
-  #   enable = true;
-  #   configDir = ./eww-config;
-  # };
+  programs.eww = {
+    enable = true;
+    configDir = ./eww-config;
+  };
 
   programs.waybar = {
     enable = true;
@@ -115,25 +143,25 @@
     '';
   };
 
-  programs.alacritty = {
-    enable = true;
-    settings = {
-      font = {
-        normal = {
-          family = "JetBrains Mono";
-          style = "Regular";
-        };
-        size = 12;
-      };
-      window = {
-        opacity = 0.93;
-        padding = {
-          x = 5;
-          y = 5;
-        };
-      };
-    };
-  };
+  # programs.alacritty = {
+  #   enable = true;
+  #   settings = {
+  #     font = {
+  #       normal = {
+  #         family = "JetBrains Mono";
+  #         style = "Regular";
+  #       };
+  #       size = 12;
+  #     };
+  #     window = {
+  #       opacity = 0.93;
+  #       padding = {
+  #         x = 5;
+  #         y = 5;
+  #       };
+  #     };
+  #   };
+  # };
 
   programs.firefox = {
     enable = true;
@@ -156,6 +184,8 @@
     userName = "cource";
     ignores = [ "**~" "**#" ];
   };
+
+  services.ssh-agent.enable = true;
 
   services.lorri.enable = true;
   programs.jujutsu.enable = true;

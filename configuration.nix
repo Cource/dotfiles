@@ -8,12 +8,21 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./nvidia.nix
     ];
 
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
+
+  # nix.settings = {
+  #   substituters = [
+  #     "http://192.168.15.235:5000"
+  #     "https://cache.nixos.org/"
+  #   ];
+  #   trusted-public-keys = [
+  #     "binarycache.example.com:AItzBEzbcE1bVFRV52di5G4/XvH6vwiyRPIIJQk3PNg="
+  #   ];
+  # };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -71,7 +80,12 @@
       touchpad.naturalScrolling = true;
     };
 
+    keyd = {
       enable = true;
+      keyboards.default = {
+        ids = ["*"];
+        settings.main.capslock = "layer(control)";
+      };
     };
 
     xserver = {
@@ -94,10 +108,9 @@
 
       xkb = {
         layout = "us";
-      #   options = "caps:ctrl_modifier";
       };
     };
-    
+
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -116,7 +129,6 @@
   users.users.cource = {
     isNormalUser = true;
     extraGroups = [ "wheel" "adbusers" "video" ];
-    shell = pkgs.zsh;
   };
   fonts.packages = [
     pkgs.fira-code
@@ -131,6 +143,7 @@
     systemPackages = with pkgs; [
       vim
       wget
+      rlwrap
     ];
     sessionVariables.NIXOS_OZONE_WL = "1";
   };
@@ -142,7 +155,6 @@
   ];
 
   programs = {
-    zsh.enable = true;
     adb.enable = true;
     steam = {
       enable = true;

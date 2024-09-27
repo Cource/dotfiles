@@ -36,7 +36,7 @@
   (electric-pair-mode)
   (set-fill-column 79)
   (global-display-fill-column-indicator-mode t)
-  (set-frame-parameter nil 'alpha-background 94))
+  (add-to-list 'default-frame-alist '(alpha-background . 94)))
 
 
 (use-package constant-theme
@@ -104,13 +104,21 @@
 (use-package dirvish
   :config (dirvish-override-dired-mode))
 
-(use-package direnv
-  :config (direnv-mode))
+(use-package envrc
+  :hook (after-init . envrc-global-mode))
+
+(use-package eldoc-box)
 
 (use-package eglot
+  :hook (eldoc-mode . eldoc-box-hover-mode)
   :config
   (add-to-list 'eglot-server-programs
-             '(odin-mode . ("ols" "--stdio"))))
+               '(odin-mode . ("ols" "--stdio"))))
+
+(use-package vterm
+  :hook
+  (vterm-mode . (lambda ()
+                  (display-fill-column-indicator-mode -1))))
 
 ;; Org mode stuff
 (use-package visual-fill-column)

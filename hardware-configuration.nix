@@ -8,32 +8,74 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" "rtsx_usb_sdmmc" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" "tp_smapi" ];
+  boot.kernelModules = [ "kvm-amd" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    tp_smapi
+  ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/77903bdf-be4d-4694-b92d-833a50682357";
-      fsType = "ext4";
+    { device = "/dev/disk/by-uuid/e6378eaf-684b-43fa-b614-d0be3f4bfd33";
+      fsType = "btrfs";
+      options = [ "subvol=root" "compress=zstd" ];
+    };
+
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/e6378eaf-684b-43fa-b614-d0be3f4bfd33";
+      fsType = "btrfs";
+      options = [ "subvol=home" "compress=zstd" ];
+    };
+
+  fileSystems."/nix" =
+    { device = "/dev/disk/by-uuid/e6378eaf-684b-43fa-b614-d0be3f4bfd33";
+      fsType = "btrfs";
+      options = [ "subvol=nix" "noatime" "compress=zstd" ];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/0AF8-5238";
+    { device = "/dev/disk/by-uuid/F256-C858";
       fsType = "vfat";
     };
 
-  swapDevices = [{ device = "/dev/nvme0n1p6"; }];
+  fileSystems."/swap" =
+    { device = "/dev/disk/by-uuid/e6378eaf-684b-43fa-b614-d0be3f4bfd33";
+      fsType = "btrfs";
+      options = [ "subvol=swap" ];
+    };
+
+  swapDevices = [ { device = "/swap/swapfile"; } ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp3s0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp3s0f0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlan0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+  hardware.opengl = {
+    enable = true;
+    driSupport32Bit = true;
+  };
+
+  powerManagement.enable = true;
+
+  services = {
+    auto-cpufreq.settings = {
+      enable = true;
+      battery = {
+        governor = "powersave";
+        turbo = "never";
+      };
+      charger = {
+        governor = "performance";
+        turbo = "auto";
+      };
+    };
+    thinkfan.enable = true;
+  };
+
 }
