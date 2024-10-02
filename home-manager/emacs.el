@@ -22,11 +22,14 @@
   (variable-pitch ((t (:font "Atkinson Hyperlegible" :height 140))))
   :hook
   (before-save . whitespace-cleanup)
+  (compilation-filter . ansi-color-compilation-filter)
   :custom
   (indent-tabs-mode nil)
   (inhibit-startup-screen t)
   (ring-bell-function 'ignore)
   (straight-use-package-by-default t)
+  (treesit-language-source-alist
+   '((tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")))
   :config
   (scroll-bar-mode 0)
   (tooltip-mode  0)
@@ -34,13 +37,15 @@
   (tool-bar-mode 0)
   (delete-selection-mode)
   (electric-pair-mode)
-  (set-fill-column 79)
-  (global-display-fill-column-indicator-mode t)
-  (add-to-list 'default-frame-alist '(alpha-background . 94)))
+  (set-fill-column 79))
+  ;; (global-display-fill-column-indicator-mode t)
+  ;; (add-to-list 'default-frame-alist '(alpha-background . 94)))
 
 
-(use-package constant-theme
-  :config (load-theme 'constant t))
+(use-package majapahit-themes
+  :config (load-theme 'majapahit-dark t))
+;; (use-package constant-theme
+;;   :config (load-theme 'constant t))
 ;; (use-package wildcharm-theme
 ;;   :config (load-theme 'wildcharm t))
 
@@ -110,7 +115,7 @@
 (use-package eldoc-box)
 
 (use-package eglot
-  :hook (eldoc-mode . eldoc-box-hover-mode)
+  :hook (eglot-managed-mode . eldoc-box-hover-mode)
   :config
   (add-to-list 'eglot-server-programs
                '(odin-mode . ("ols" "--stdio"))))
@@ -120,24 +125,51 @@
   (vterm-mode . (lambda ()
                   (display-fill-column-indicator-mode -1))))
 
+(defun jujutsu ()
+  "Minimal jj (Jujutsu) interface for Emacs"
+  (interactive)
+  (let ((command ""))
+    (while (not (string= command "q"))
+      (compile "jj log")
+      (setq command (read-string "Enter a command (or 'q' to quit): "))
+      (cond
+       ((or (string= "" command)
+            (string= "q" command))
+        nil)
+       ((or (string-prefix-p "help" command)
+            (string-prefix-p "diff" command))
+        (compile (concat "jj " command)))
+       (t (shell-command (concat "jj " command)))))))
+
 ;; Org mode stuff
 (use-package visual-fill-column)
 (use-package org
   :custom-face
-  (org-level-1 ((t (:height 1.728 :weight bold :inherit variable-pitch))))
+  (org-level-1 ((t (:weight bold))))
   (org-level-2 ((t (:weight bold))))
   (org-level-3 ((t (:weight bold))))
   (org-level-4 ((t (:weight bold))))
   :custom (org-ellipsis "▾")
   :hook (org-mode . my-org-startup)
   :config
-    (defun my-org-startup ()
+  (defun my-org-startup ()
     (org-indent-mode)
     (visual-fill-column-mode)
     (set-fill-column 78)
     (setq visual-fill-column-center-text t)
     (visual-line-mode)
     (display-fill-column-indicator-mode -1)))
+
+(use-package org-roam
+  :bind
+  ("C-c i" . org-roam-node-insert)
+  ("C-c f" . org-roam-node-find)
+  ("C-c d" . org-roam-dailies-find-date)
+  ("C-c r" . org-roam-buffer-toggle)
+  :custom
+  (org-roam-directory "~/Documents/roam")
+  :config
+  (org-roam-db-autosync-mode))
 
 (use-package nix-mode)
 
