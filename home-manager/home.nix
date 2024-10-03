@@ -51,11 +51,7 @@
       nonet = "systemd-run --scope -p IPAddressDeny=any";
     };
     bashrcExtra =
-      ''rightprompt()
-        {
-          printf "%*s" $COLUMNS "\[\e[90m\]\w\[\e[97m\]|\[\e[0m\]"
-        }
-        PS1="\[$(tput sc; rightprompt; tput rc)\]\u\[\e[90m\]@\h\$\[\e[97m\]|\[\e[0m\] "'';
+      ''PS1="\u\[\e[90m\]@\h\$\[\e[97m\]|\[\e[0m\] "'';
   };
 
   programs.direnv = {
