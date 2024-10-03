@@ -135,6 +135,7 @@
     pkgs.atkinson-hyperlegible
     pkgs.noto-fonts
     pkgs.jetbrains-mono
+    pkgs.rounded-mgenplus
   ];
 
   # List packages installed in system profile. To search, run:
