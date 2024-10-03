@@ -24,6 +24,10 @@
         gimp
         emacs29-pgtk
         mg
+        monophony
+        man-pages
+        mission-center
+        gnome.nautilus
       ];
     stateVersion = "24.05";
   };
