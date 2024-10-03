@@ -171,6 +171,14 @@
   :config
   (org-roam-db-autosync-mode))
 
+(use-package org-roam-ui
+  :after org-roam
+  :custom
+  (org-roam-ui-sync-theme t)
+  (org-roam-ui-follow t)
+  (org-roam-ui-update-on-save t)
+  (org-roam-ui-open-on-start t))
+
 (use-package nix-mode)
 
 (use-package odin-mode
